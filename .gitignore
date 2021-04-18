@@ -1,0 +1,28 @@
+.idea
+.idea/*
+target
+target/*
+webStore.iml
+frontend/auto_market/node_modules
+frontend/auto_market/node_modules/*
+
+/node_modules
+frontend/auto_market/.pnp
+frontend/auto_market/.pnp.js
+
+# testing
+frontend/auto_market/coverage
+
+# production
+frontend/auto_market/build
+
+# misc
+frontend/auto_market/.DS_Store
+frontend/auto_market/.env.local
+frontend/auto_market/.env.development.local
+frontend/auto_market/.env.test.local
+frontend/auto_market/.env.production.local
+
+frontend/auto_market/npm-debug.log*
+frontend/auto_market/yarn-debug.log*
+frontend/auto_market/yarn-error.log*
