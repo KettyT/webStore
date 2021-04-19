@@ -7,6 +7,8 @@ import DetailGroupInfo from "./pages/DetailGroupInfo";
 import ParentDetailGroupInfo from "./pages/ParentDetailGroupInfo";
 import {getHistory} from "../component/history";
 import DetailInfo from "./pages/DetailInfo";
+import Cart from "./pages/Cart";
+import {getGlobalController} from "../component/GlobalController";
 
 // export default Header;
 
@@ -16,8 +18,18 @@ class Catalog extends React.Component {
         super();
 
         this.state = {
-            data: []
+            data: [],
+            cartInfo: {}
         };
+
+        getGlobalController.catalogStateFunction = this.updateState.bind(this);
+    }
+
+    updateState (key, object) {
+        let obj = {};
+        obj[key] = object;
+
+        this.setState(Object.assign(this.state, obj));
     }
 
     handleLindToDetailGroup () {
@@ -124,84 +136,85 @@ class Catalog extends React.Component {
         }
 
         return (
-            <table id="TABLE_1">
-                <tbody id="TBODY_2">
-                <tr id="TR_3">
-                    <td id="TD_4">
+            <div className = "wrapper">
+                <table id="TABLE_1">
+                    <tbody id="TBODY_2">
+                    <tr id="TR_3">
+                        <td id="TD_4">
 
-                        <div id="DIV_5">
-                            <div id="DIV_6">
-                                <span id="SPAN_7">Классификатор:</span>
+                            <div id="DIV_5">
+                                <div id="DIV_6">
+                                    <span id="SPAN_7">Классификатор:</span>
 
-                                <div id="DIV_8">
-                                    Общий
+                                    <div id="DIV_8">
+                                        Общий
+                                    </div>
+
+                                    <div id="DIV_9">
+                                        От производителя
+                                    </div>
+
+                                    <div id="DIV_10">
+                                    </div>
                                 </div>
+                                <div id="DIV_11">
 
-                                <div id="DIV_9">
-                                    От производителя
-                                </div>
 
-                                <div id="DIV_10">
-                                </div>
-                            </div>
-                            <div id="DIV_11">
-                                
-
-                                <div id="DIV_12">
-                                    <div id="DIV_13">
-                                        <span id="SPAN_14">Поиск:</span>
-                                        <div id="DIV_15">
-                                            <div id="DIV_16">
+                                    <div id="DIV_12">
+                                        <div id="DIV_13">
+                                            <span id="SPAN_14">Поиск:</span>
+                                            <div id="DIV_15">
+                                                <div id="DIV_16">
+                                                </div>
+                                                <input type="text" placeholder="Введите название узла или детали"
+                                                       id="INPUT_17"/>
+                                                <div id="DIV_18">
+                                                </div>
                                             </div>
-                                            <input type="text" placeholder="Введите название узла или детали"
-                                                   id="INPUT_17"/>
-                                            <div id="DIV_18">
+                                            <div id="DIV_19">
                                             </div>
                                         </div>
-                                        <div id="DIV_19">
+
+                                        <div className="catalog_cmp">
+                                            {tree}
+                                        </div>
+
+                                        <div id="DIV_1554">
+                                            <span id="SPAN_1555">По вашему запросу ничего не найдено.</span> <span
+                                            id="SPAN_1556">Рекомендации:</span> <span id="SPAN_1557">Убедитесь, что все слова написаны без ошибок.<br
+                                            id="BR_1558"/>Попробуйте использовать другие ключевые слова</span>
                                         </div>
                                     </div>
 
-                                    <div className="catalog_cmp">
-                                        {tree}
-                                    </div>
 
-                                    <div id="DIV_1554">
-                                        <span id="SPAN_1555">По вашему запросу ничего не найдено.</span> <span
-                                        id="SPAN_1556">Рекомендации:</span> <span id="SPAN_1557">Убедитесь, что все слова написаны без ошибок.<br
-                                        id="BR_1558"/>Попробуйте использовать другие ключевые слова</span>
+                                    <div id="DIV_1559">
+                                        <ul id="UL_1560">
+                                            <li id="LI_1561">
+                                                ДВИГАТЕЛЬ
+                                            </li>
+                                            <li id="LI_1562">
+                                                КУЗОВ
+                                            </li>
+                                            <li id="LI_1563">
+                                                ОСНАЩЕНИЕ КУЗОВА
+                                            </li>
+                                            <li id="LI_1564">
+                                                ТРАНСМИССИЯ
+                                            </li>
+                                            <li id="LI_1565">
+                                                ШАССИ
+                                            </li>
+                                            <li id="LI_1566">
+                                                ЭЛЕКТРИКА
+                                            </li>
+                                        </ul>
                                     </div>
-                                </div>
-                                
-
-                                <div id="DIV_1559">
-                                    <ul id="UL_1560">
-                                        <li id="LI_1561">
-                                            ДВИГАТЕЛЬ
-                                        </li>
-                                        <li id="LI_1562">
-                                            КУЗОВ
-                                        </li>
-                                        <li id="LI_1563">
-                                            ОСНАЩЕНИЕ КУЗОВА
-                                        </li>
-                                        <li id="LI_1564">
-                                            ТРАНСМИССИЯ
-                                        </li>
-                                        <li id="LI_1565">
-                                            ШАССИ
-                                        </li>
-                                        <li id="LI_1566">
-                                            ЭЛЕКТРИКА
-                                        </li>
-                                    </ul>
                                 </div>
                             </div>
-                        </div>
-                    </td>
-                    <td id="TD_1567">
-                    </td>
-                    <td id="TD_1568">
+                        </td>
+                        <td id="TD_1567">
+                        </td>
+                        <td id="TD_1568">
 
 
                             <Switch>
@@ -212,12 +225,16 @@ class Catalog extends React.Component {
                                 <Route path = "/detailInfo/:detailId">
                                     <DetailInfo detailInfo = {this.state.detailInfo}/>
                                 </Route>
+                                <Route path = "/cart">
+                                    <Cart cartInfo = {this.state.cartInfo}/>
+                                </Route>
                             </Switch>
 
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         );
     }
 }
