@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "v_cart_info", schema = "auto_market", catalog = "")
-public class VCartInfoEntity {
+@Table(name = "v_cart_info_session", schema = "auto_market", catalog = "")
+public class VCartInfoSessionEntity implements IVCartInfoEntity {
     @Id
     private int id;
     private int quantity;

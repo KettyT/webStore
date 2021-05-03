@@ -1,6 +1,6 @@
 package ru.tiutikova.dto;
 
-import ru.tiutikova.dao.entity.DetailGroupEntity;
+import ru.tiutikova.dao.entity.detail.DetailGroupEntity;
 
 import java.util.ArrayList;
 import java.util.List;

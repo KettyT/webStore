@@ -1,5 +1,4 @@
 import React from "react";
-import { withRouter } from "react-router";
 
 class DetailGroupInfo extends React.Component {
 
@@ -32,7 +31,7 @@ class DetailGroupInfo extends React.Component {
 
         return (
             <div>
-                <span id="SPAN_1569">ДВИГАТЕЛЬ</span>
+                <span id="SPAN_1569">{detailGroupInfoArr && detailGroupInfoArr.length > 0 && detailGroupInfoArr[0].name}</span>
                 <div className = "detail_group_info">
                     <div id="dg_DIV_1">
                         <ul id="dg_UL_2">

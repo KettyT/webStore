@@ -1,14 +1,13 @@
 import React from "react";
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-// import {} from 'react-router-dom';
-
+import {Route, Switch} from "react-router-dom";
 import MenuItem from "./detailsTree/MenuItem";
 import DetailGroupInfo from "./pages/DetailGroupInfo";
 import ParentDetailGroupInfo from "./pages/ParentDetailGroupInfo";
 import {getHistory} from "../component/history";
 import DetailInfo from "./pages/DetailInfo";
 import Cart from "./pages/Cart";
-import {getGlobalController} from "../component/GlobalController";
+import {controlFunctions, getGlobalController} from "../component/GlobalController";
+// import {} from 'react-router-dom';
 
 // export default Header;
 
@@ -46,6 +45,7 @@ class Catalog extends React.Component {
                 }
             }).then(function (response) {
                 let data = JSON.parse(response);
+                console.log("getDetailInfoById");
                 console.log(data);
 
                 self.setState(Object.assign(self.state, {
@@ -83,8 +83,28 @@ class Catalog extends React.Component {
         }
     }
 
+    updateCartStatistics() {
+
+        window.utils.getHttpPromise({
+            method: "GET",
+            url: "/api/cart/getCartStatistics",
+            contentType: "application/json",
+            jsonData: {
+            }
+        }).then(function (response) {
+            let data = JSON.parse(response);
+            console.log(data);
+
+            getGlobalController.updateHeaderCartInfo(data.count, data);
+        });
+
+
+    }
+
     componentDidMount() {
         let self = this;
+
+        this.updateCartStatistics();
 
         window.utils.getHttpPromise({
             method: "GET",
@@ -117,6 +137,10 @@ class Catalog extends React.Component {
             self.getDetailInfo()(+detailId);
         }
 
+        if (href.indexOf("/cart") !== -1) {
+            controlFunctions.updateCartPage();
+        }
+
 
 
     }
@@ -144,15 +168,15 @@ class Catalog extends React.Component {
 
                             <div id="DIV_5">
                                 <div id="DIV_6">
-                                    <span id="SPAN_7">Классификатор:</span>
+                                    {/*<span id="SPAN_7">Классификатор:</span>*/}
 
                                     <div id="DIV_8">
-                                        Общий
+                                        Общий каталог
                                     </div>
 
-                                    <div id="DIV_9">
+                                    {/*<div id="DIV_9">
                                         От производителя
-                                    </div>
+                                    </div>*/}
 
                                     <div id="DIV_10">
                                     </div>

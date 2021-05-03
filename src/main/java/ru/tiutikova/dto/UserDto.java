@@ -2,6 +2,7 @@ package ru.tiutikova.dto;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import ru.tiutikova.dao.entity.auth.UsersEntity;
 
 import java.util.Collection;
 
@@ -15,6 +16,18 @@ public class UserDto implements Authentication {
     private String sessionId;
 
     boolean authentificated = false;
+
+    public UserDto() {
+    }
+
+    public UserDto(UsersEntity entity) {
+        this.id = entity.getId();
+        this.email = entity.getEmail();
+        this.name = entity.getName();
+        this.surname = entity.getSurname();
+        this.password = entity.getPassword();
+//        this.sessionId = sessionId;
+    }
 
     public int getId() {
         return id;

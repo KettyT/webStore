@@ -1,21 +1,22 @@
 package ru.tiutikova.dao.entity.cart;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "cart", schema = "auto_market", catalog = "")
 public class CartEntity {
+
     private int id;
 
     private int sessionId;
 
     private BigDecimal summ;
 
+    private int userId;
+
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;
@@ -41,5 +42,14 @@ public class CartEntity {
 
     public void setSumm(BigDecimal summ) {
         this.summ = summ;
+    }
+
+    @Column(name = "user_id")
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

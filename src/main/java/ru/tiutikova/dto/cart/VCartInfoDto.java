@@ -1,7 +1,6 @@
 package ru.tiutikova.dto.cart;
 
-import ru.tiutikova.dao.entity.cart.CartDetailsEntity;
-import ru.tiutikova.dao.entity.cart.VCartInfoEntity;
+import ru.tiutikova.dao.entity.cart.IVCartInfoEntity;
 
 import java.math.BigDecimal;
 
@@ -18,7 +17,7 @@ public class VCartInfoDto {
     private int cartId;
     private String sessionCode;
 
-    public VCartInfoDto(VCartInfoEntity entity) {
+    public VCartInfoDto(IVCartInfoEntity entity) {
         this.id = entity.getId();
         this.quantity = entity.getQuantity();
         this.storeQuantity = entity.getStoreQuantity();

@@ -8,10 +8,11 @@ public class SessionsEntity {
     private int id;
     private String sessionCode;
 
-    private UsersEntity usersEntity;
+//    private UsersEntity usersEntity;
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -19,6 +20,8 @@ public class SessionsEntity {
     public void setId(int id) {
         this.id = id;
     }
+
+    public Integer userId;
 
     @Basic
     @Column(name = "session_code")
@@ -30,7 +33,9 @@ public class SessionsEntity {
         this.sessionCode = sessionCode;
     }
 
-    @ManyToOne
+
+
+    /*@ManyToOne
     @JoinColumn(name = "user_id")
     public UsersEntity getUsersEntity() {
         return usersEntity;
@@ -38,5 +43,14 @@ public class SessionsEntity {
 
     public void setUsersEntity(UsersEntity usersEntity) {
         this.usersEntity = usersEntity;
+    }*/
+
+    @Column(name = "user_id")
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

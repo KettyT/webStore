@@ -3,7 +3,7 @@ package ru.tiutikova.dao.repositories;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import ru.tiutikova.dao.entity.DetailGroupEntity;
+import ru.tiutikova.dao.entity.detail.DetailGroupEntity;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package ru.tiutikova.dao.entity;
+package ru.tiutikova.dao.entity.detail;
 
 import javax.persistence.*;
 import java.util.Objects;

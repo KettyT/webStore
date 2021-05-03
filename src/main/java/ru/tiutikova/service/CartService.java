@@ -7,11 +7,13 @@ import org.springframework.stereotype.Service;
 import ru.tiutikova.dao.entity.auth.SessionsEntity;
 import ru.tiutikova.dao.entity.cart.CartDetailsEntity;
 import ru.tiutikova.dao.entity.cart.CartEntity;
-import ru.tiutikova.dao.entity.cart.VCartInfoEntity;
+import ru.tiutikova.dao.entity.cart.IVCartInfoEntity;
+import ru.tiutikova.dao.entity.cart.VCartInfoSessionEntity;
 import ru.tiutikova.dao.repositories.SessionRepository;
 import ru.tiutikova.dao.repositories.cart.CartDetailsRepository;
 import ru.tiutikova.dao.repositories.cart.CartRepository;
-import ru.tiutikova.dao.repositories.cart.VCartInfoRepository;
+import ru.tiutikova.dao.repositories.cart.VCartInfoSessionRepository;
+import ru.tiutikova.dao.repositories.cart.VCartInfoUserRepository;
 import ru.tiutikova.dto.UserDto;
 import ru.tiutikova.dto.cart.CartDto;
 import ru.tiutikova.dto.cart.FullCartInfoDto;
@@ -27,7 +29,9 @@ import java.util.List;
 @Service
 public class CartService {
 
-    private VCartInfoRepository cartInfoRepository;
+    private VCartInfoSessionRepository cartInfoSessionRepository;
+
+    private VCartInfoUserRepository cartInfoUserRepository;
 
     private CartDetailsRepository cartDetailsRepository;
 
@@ -36,12 +40,14 @@ public class CartService {
     private CartRepository cartRepository;
 
     @Autowired
-    public CartService(VCartInfoRepository cartInfoRepository, CartDetailsRepository cartDetailsRepository,
+    public CartService(VCartInfoSessionRepository cartInfoSessionRepository, VCartInfoUserRepository cartInfoUserRepository,
+                       CartDetailsRepository cartDetailsRepository,
                        SessionRepository sessionRepository, CartRepository cartRepository) {
-        this.cartInfoRepository = cartInfoRepository;
+        this.cartInfoSessionRepository = cartInfoSessionRepository;
         this.cartDetailsRepository = cartDetailsRepository;
         this.sessionRepository = sessionRepository;
         this.cartRepository = cartRepository;
+        this.cartInfoUserRepository = cartInfoUserRepository;
     }
 
     private SessionsEntity createSession (String sessionCode) {
@@ -53,7 +59,7 @@ public class CartService {
         return sessionsEntity;
     }
 
-    private CartEntity createCart (SessionsEntity sessionsEntity) {
+    private CartEntity createCart (SessionsEntity sessionsEntity, int userId) {
         /*SessionsEntity sessionsEntity = sessionRepository.getSessionsEntityBySessionCode(sessionCode);
 
         if (sessionsEntity == null) {
@@ -63,22 +69,34 @@ public class CartService {
         CartEntity cartEntity = new CartEntity();
         cartEntity.setSessionId(sessionsEntity.getId());
 
-        return cartRepository.save(cartEntity);
+        if (userId > 0) {
+            cartEntity.setUserId(userId);
+        }
+
+        cartEntity = cartRepository.save(cartEntity);
+        cartRepository.flush();
+        return cartEntity;
     }
 
 
-    public CartDto getCartStatistics (String sessionKey) {
-        List<VCartInfoEntity> cartInfoEntityList = cartInfoRepository.getAllBySessionCode(sessionKey);
+    public CartDto getCartStatistics (int userId, String sessionKey) {
+        List<? extends IVCartInfoEntity> cartInfoEntityList;
+        if (userId > 0) {
+            cartInfoEntityList = cartInfoUserRepository.getByUserId(userId);
+        } else {
+            cartInfoEntityList = cartInfoSessionRepository.getAllBySessionCode(sessionKey);
+        }
+
         return getCartStatistics (cartInfoEntityList);
     }
 
-    public CartDto getCartStatistics (List<VCartInfoEntity> cartInfoEntityList) {
-        VCartInfoEntity existingCardDetail = null;
+    public CartDto getCartStatistics (List<? extends IVCartInfoEntity> cartInfoEntityList) {
+        VCartInfoSessionEntity existingCardDetail = null;
 
         BigDecimal totalPrice = BigDecimal.ZERO;
         int totalCount = 0;
 
-        for (VCartInfoEntity entity : cartInfoEntityList) {
+        for (IVCartInfoEntity entity : cartInfoEntityList) {
             totalCount += entity.getQuantity();
             totalPrice = totalPrice.add(entity.getPrice().multiply(BigDecimal.valueOf(entity.getQuantity())));
         }
@@ -93,7 +111,7 @@ public class CartService {
 
 
 
-    private CartDetailsEntity createNewCartDetail (String sessionCode, CartDto dto) {
+    private CartDetailsEntity createNewCartDetail (String sessionCode, int userId, CartDto dto) {
         SessionsEntity sessionsEntity = sessionRepository.getSessionsEntityBySessionCode(sessionCode);
 
         if (sessionsEntity == null) {
@@ -103,7 +121,7 @@ public class CartService {
         CartEntity cartEntity = cartRepository.getBySessionId(sessionsEntity.getId());
 
         if (cartEntity == null) {
-            cartEntity = createCart(sessionsEntity);
+            cartEntity = createCart(sessionsEntity, userId);
         }
 
         /*if (cartInfoEntityList == null || cartInfoEntityList.isEmpty()) {
@@ -126,14 +144,23 @@ public class CartService {
         SecurityContext sc = SecurityContextHolder.getContext();
         UserDto userDto = (UserDto)sc.getAuthentication();
 
+        int userId = userDto.getId();
+
         String sessionKey = userDto.getSessionId();
 
-        VCartInfoEntity existingCartInfoEntity = cartInfoRepository.getBySessionCodeAndDetailId(sessionKey, dto.getId());
+        IVCartInfoEntity existingCartInfoEntity;
+
+        if (userId > 0) {
+            existingCartInfoEntity = cartInfoUserRepository.getByUserIdAndDetailId(userId, dto.getId());
+        } else {
+            existingCartInfoEntity = cartInfoSessionRepository.getBySessionCodeAndDetailId(sessionKey, dto.getId());
+        }
+
 
         if (existingCartInfoEntity == null) {
-            CartDetailsEntity cartDetailsEntity = createNewCartDetail(sessionKey, dto);
+            CartDetailsEntity cartDetailsEntity = createNewCartDetail(sessionKey, userId, dto);
 
-            return getCartStatistics(sessionKey);
+            return getCartStatistics(userId, sessionKey);
         }
 
         CartDetailsEntity exiatingCartDetailsEntity = cartDetailsRepository.getById(existingCartInfoEntity.getId());
@@ -141,10 +168,7 @@ public class CartService {
         exiatingCartDetailsEntity.setQuantity(Math.min(exiatingCartDetailsEntity.getQuantity() + dto.getCount(), existingCartInfoEntity.getStoreQuantity()));
         cartDetailsRepository.save(exiatingCartDetailsEntity);
 
-        return getCartStatistics(sessionKey);
-
-
-
+        return getCartStatistics(userId, sessionKey);
     }
 
     public FullCartInfoDto getFullCartInfo() {
@@ -152,20 +176,32 @@ public class CartService {
         SecurityContext sc = SecurityContextHolder.getContext();
         UserDto userDto = (UserDto)sc.getAuthentication();
 
+        int userId = userDto.getId();
         String sessionKey = userDto.getSessionId();
 
-        List<VCartInfoEntity> cartInfoEntityList = cartInfoRepository.getAllBySessionCode(sessionKey);
+        List<? extends IVCartInfoEntity> cartInfoEntityList;
+
+        if (userId > 0) {
+            cartInfoEntityList = cartInfoUserRepository.getByUserId(userId);
+        } else {
+            cartInfoEntityList = cartInfoSessionRepository.getAllBySessionCode(sessionKey);
+        }
 
         CartDto cartDto = getCartStatistics (cartInfoEntityList);
 
         fullCartInfoDto.setCount(cartDto.getCount());
         fullCartInfoDto.setTotalSumm(cartDto.getTotalSumm());
 
-        for (VCartInfoEntity entity : cartInfoEntityList) {
+        for (IVCartInfoEntity entity : cartInfoEntityList) {
             fullCartInfoDto.getCartDetailsDtooList().add(new VCartInfoDto(entity));
         }
 
         return fullCartInfoDto;
+    }
+
+    public FullCartInfoDto doOrder() {
+
+        return null;
     }
 
 

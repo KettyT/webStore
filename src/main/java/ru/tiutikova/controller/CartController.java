@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import ru.tiutikova.dao.entity.cart.CartDetailsEntity;
 import ru.tiutikova.dto.UserDto;
 import ru.tiutikova.dto.cart.CartDto;
 import ru.tiutikova.dto.cart.FullCartInfoDto;
@@ -35,7 +34,14 @@ public class CartController {
         UserDto userDto = (UserDto)sc.getAuthentication();
 
         String sessionKey = userDto.getSessionId();
-        return cartService.getCartStatistics(sessionKey);
+        CartDto cartDto = cartService.getCartStatistics(userDto.getId(), sessionKey);
+
+        if (userDto.getEmail() != null) {
+            cartDto.setName(userDto.getName());
+            cartDto.setSurname(userDto.getSurname());
+        }
+
+        return cartDto;
     }
 
     @RequestMapping(value = "getFullCartInfo", method = RequestMethod.GET)

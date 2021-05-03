@@ -1,13 +1,10 @@
 package ru.tiutikova.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import ru.tiutikova.filter.AuthFilter;
 import ru.tiutikova.service.UserService;
@@ -18,19 +15,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 //    @Autowired
 //    private MyAccessDeniedHandler accessDeniedHandler;
-    @Autowired
+
     private UserService userService;
 
     private AuthFilter authFilter;
 
-    public SecurityConfiguration () {
-        this.authFilter = new AuthFilter();
+    @Autowired
+    public SecurityConfiguration (UserService userService) {
+        this.authFilter = new AuthFilter(userService);
+        this.userService = userService;
     }
 
-    @Bean
+    /*@Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
-    }
+    }*/
 
     // роль admin всегда есть доступ к /admin/**
     // роль user всегда есть доступ к /user/**
@@ -41,6 +40,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests().antMatchers("/**").permitAll();
+//        http.authorizeRequests().antMatchers("/api/cart/doOrder").authenticated();
+
+
                 /*.authorizeRequests()
                 .antMatchers("/favicon.ico","/403","/css/**","/js/**", "/webjars/**", "/api/public/login/login").permitAll()
                 .anyRequest().authenticated()
@@ -58,8 +60,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(authFilter, BasicAuthenticationFilter.class);
     }
 
-    @Autowired
+    /*@Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder());
-    }
+    }*/
 }

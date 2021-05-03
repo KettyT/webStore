@@ -3,9 +3,9 @@ package ru.tiutikova.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.tiutikova.dao.entity.DetailGroupEntity;
 import ru.tiutikova.dao.entity.VDetailInfoEntity;
 import ru.tiutikova.dao.entity.VGroupDetailInfoEntity;
+import ru.tiutikova.dao.entity.detail.DetailGroupEntity;
 import ru.tiutikova.dao.repositories.DetailGroupRepository;
 import ru.tiutikova.dao.repositories.VDetailInfoRepository;
 import ru.tiutikova.dao.repositories.VGroupDetailInfoRepository;
