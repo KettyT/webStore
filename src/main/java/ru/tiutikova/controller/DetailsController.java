@@ -58,7 +58,7 @@ public class DetailsController {
     }
 
     @RequestMapping(value = "searchPath", method = RequestMethod.POST)
-    public List<DetailGroupDto> searchPath(@RequestBody SearchDto dto) {
+    public List<DetailDto> searchPath(@RequestBody SearchDto dto) {
         return detailsService.searchPath(dto);
     }
 

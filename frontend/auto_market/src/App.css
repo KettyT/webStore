@@ -269,6 +269,7 @@ td, th {
   max-height: 0;
   overflow: hidden;
   width: 100%;
+  max-width: 400px;
   position: absolute;
   font-size: 1.1rem;
   overflow-y: auto;
@@ -276,7 +277,7 @@ td, th {
   transition: 0.5s all;
 }
 .selected_field__with_data {
-  max-height: 500px;
+  max-height: 200px;
 }
 .selected_field .service_line {
   display: flex;

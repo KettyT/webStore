@@ -184,7 +184,7 @@
                 data = {};
             }
 
-            data = data.data;
+            // data = data.data;
             self.localData = data;
 
             self.buildSelect(self.localData);
@@ -218,13 +218,17 @@
             emptyObject[self.fields.idField] = 0;
         }
 
-        var template = document.getElementById(self.templateId);
+        var template = "<%data.forEach(function (element, i) { %>\n" +
+            "      <div class=\"service_line\" data-id=\"<%=element.id%>\">\n" +
+            "        <div class=\"service_line__name\"><%=element.name%></div>\n" +
+            "      </div>\n" +
+            "      <%});%>";
         if (!template) {
             console.log("Шаблон указан неверно");
             return;
         }
 
-        self.htmlContent = _.template(template.innerHTML);
+        self.htmlContent = _.template(template);
         self.selectedFields.innerHTML = self.htmlContent({data: data});
         self.selectedFields.classList.add("selected_field__with_data");
     };
@@ -281,7 +285,7 @@ document.addEventListener("DOMContentLoaded", function () {
         templateId: "CWaressSearcherTemplate",
         fields: {
             displayField: "name",
-            idField: "product_id"
+            idField: "id"
         },
         searchFields: {
             parentId: null

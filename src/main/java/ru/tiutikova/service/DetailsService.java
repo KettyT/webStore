@@ -13,6 +13,7 @@ import ru.tiutikova.dto.SimpleDto;
 import ru.tiutikova.dto.detail.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class DetailsService {
@@ -148,8 +149,12 @@ public class DetailsService {
         return result;
     }
 
-    public List<DetailGroupDto> searchPath(@RequestBody SearchDto dto) {
+    public List<DetailDto> searchPath(@RequestBody SearchDto dto) {
+        List<DetailsEntity> detailsEntityList = detailsRepository.getAllByNameIsLike("%" + dto.getQuery() + "%");
 
+        return detailsEntityList.stream().map((entity) -> {
+            return new DetailDto(entity);
+        }).collect(Collectors.toList());
     }
 
 
