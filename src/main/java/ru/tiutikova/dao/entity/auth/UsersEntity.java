@@ -5,7 +5,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.Objects;
 
 @Entity
 @Table(name = "users", schema = "auto_market", catalog = "")
@@ -16,6 +15,7 @@ public class UsersEntity implements UserDetails {
     private String name;
     private String surname;
     private String password;
+    private String phone;
 
     @Id
     @Column(name = "id")
@@ -102,19 +102,12 @@ public class UsersEntity implements UserDetails {
         this.email = email;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UsersEntity that = (UsersEntity) o;
-        return id == that.id &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(surname, that.surname) &&
-                Objects.equals(password, that.password);
+    @Column(name = "phone")
+    public String getPhone() {
+        return phone;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, surname, password);
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

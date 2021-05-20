@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tiutikova.dto.DetailGroupDto;
 import ru.tiutikova.dto.SimpleDto;
-import ru.tiutikova.dto.VDetailInfoDto;
-import ru.tiutikova.dto.VGroupDetailInfoDto;
+import ru.tiutikova.dto.detail.*;
 import ru.tiutikova.service.DetailsService;
 
 import java.util.List;
@@ -39,8 +38,28 @@ public class DetailsController {
     }
 
     @RequestMapping(value = "getDetailInfo", method = RequestMethod.POST)
-    public VDetailInfoDto getDetailInfo(@RequestBody SimpleDto dto) {
+    public FullDetailInfo getDetailInfo(@RequestBody SimpleDto dto) {
         return detailsService.getDetailInfo(dto);
+    }
+
+    @RequestMapping(value = "getDetailGroupInfoById", method = RequestMethod.POST)
+    public List<DetailGroupListDto> getDetailGroupInfoById(@RequestBody SimpleDto dto) {
+        return detailsService.getDetailGroupInfoById(dto);
+    }
+
+    /**
+     * Представление деталей на диаграмме.
+     * @param dto
+     * @return
+     */
+    @RequestMapping(value = "getDetailGroupInfoListById", method = RequestMethod.POST)
+    public FullDetailGroupListDto getDetailGroupInfoListById(@RequestBody SimpleDto dto) {
+        return detailsService.getDetailGroupInfoListById(dto);
+    }
+
+    @RequestMapping(value = "searchPath", method = RequestMethod.POST)
+    public List<DetailGroupDto> searchPath(@RequestBody SearchDto dto) {
+        return detailsService.searchPath(dto);
     }
 
 

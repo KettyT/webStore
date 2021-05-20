@@ -1,7 +1,6 @@
-package ru.tiutikova.dao.entity;
+package ru.tiutikova.dao.entity.detail;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "v_detail_info", schema = "auto_market", catalog = "")
@@ -10,10 +9,12 @@ public class VDetailInfoEntity {
     private int id;
     private int price;
     private int quantity;
-    private Integer detailGroupId;
-    private String detailGroupName;
+    private Integer detailGroupListId;
+    private String detailGroupListTextTitle;
     private String article;
+    private String producerDetailCode;
     private int amountInPackage;
+    private int detailId;
     private String detailName;
 
     private String producerName;
@@ -51,23 +52,23 @@ public class VDetailInfoEntity {
     }
 
     @Basic
-    @Column(name = "detail_group_id")
-    public Integer getDetailGroupId() {
-        return detailGroupId;
+    @Column(name = "detail_group_list_id")
+    public Integer getDetailGroupListId() {
+        return detailGroupListId;
     }
 
-    public void setDetailGroupId(Integer detailGroupId) {
-        this.detailGroupId = detailGroupId;
+    public void setDetailGroupListId(Integer detailGroupListId) {
+        this.detailGroupListId = detailGroupListId;
+    }
+
+    public String getDetailGroupListTextTitle() {
+        return detailGroupListTextTitle;
     }
 
     @Basic
-    @Column(name = "detail_group_name")
-    public String getDetailGroupName() {
-        return detailGroupName;
-    }
-
-    public void setDetailGroupName(String detailGroupName) {
-        this.detailGroupName = detailGroupName;
+    @Column(name = "detail_group_list_name")
+    public void setDetailGroupListTextTitle(String detailGroupListTextTitle) {
+        this.detailGroupListTextTitle = detailGroupListTextTitle;
     }
 
     @Basic
@@ -118,23 +119,21 @@ public class VDetailInfoEntity {
         this.countryName = countryName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        VDetailInfoEntity that = (VDetailInfoEntity) o;
-        return id == that.id &&
-                price == that.price &&
-                quantity == that.quantity &&
-                amountInPackage == that.amountInPackage &&
-                Objects.equals(detailGroupId, that.detailGroupId) &&
-                Objects.equals(detailGroupName, that.detailGroupName) &&
-                Objects.equals(article, that.article) &&
-                Objects.equals(detailName, that.detailName);
+    @Column(name = "detail_id")
+    public int getDetailId() {
+        return detailId;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, price, quantity, detailGroupId, detailGroupName, article, amountInPackage, detailName);
+    public void setDetailId(int detailId) {
+        this.detailId = detailId;
+    }
+
+    @Column(name = "produser_details_code")
+    public String getProducerDetailCode() {
+        return producerDetailCode;
+    }
+
+    public void setProducerDetailCode(String producerDetailCode) {
+        this.producerDetailCode = producerDetailCode;
     }
 }

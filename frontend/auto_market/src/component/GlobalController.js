@@ -3,7 +3,8 @@
 
 export const getGlobalController = {
     updateHeaderCartInfo: null,
-    catalogStateFunction: null
+    catalogStateFunction: null,
+    updatePictureDetailInfo: null
 };
 
 export const controlFunctions = {

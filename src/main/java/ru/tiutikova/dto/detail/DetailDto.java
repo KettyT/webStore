@@ -1,18 +1,21 @@
-package ru.tiutikova.dao.entity.detail;
+package ru.tiutikova.dto.detail;
 
-import javax.persistence.*;
+import ru.tiutikova.dao.entity.detail.DetailsEntity;
 
-@Entity
-@Table(name = "details", schema = "auto_market", catalog = "")
-public class DetailsEntity {
+public class DetailDto {
+
     private int id;
     private Integer detailGroupListId;
     private String name;
     private String originalArticle;
-    private String code;
 
-    @Id
-    @Column(name = "id")
+    public DetailDto(DetailsEntity entity) {
+        this.id = entity.getId();
+        this.detailGroupListId = entity.getDetailGroupListId();
+        this.name = entity.getName();
+        this.originalArticle = entity.getOriginalArticle();
+    }
+
     public int getId() {
         return id;
     }
@@ -21,7 +24,6 @@ public class DetailsEntity {
         this.id = id;
     }
 
-    @Column(name = "detail_group_list_id")
     public Integer getDetailGroupListId() {
         return detailGroupListId;
     }
@@ -30,8 +32,6 @@ public class DetailsEntity {
         this.detailGroupListId = detailGroupListId;
     }
 
-    @Basic
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -40,21 +40,11 @@ public class DetailsEntity {
         this.name = name;
     }
 
-    @Column(name = "article_original")
     public String getOriginalArticle() {
         return originalArticle;
     }
 
     public void setOriginalArticle(String originalArticle) {
         this.originalArticle = originalArticle;
-    }
-
-    @Column(name = "code")
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 }

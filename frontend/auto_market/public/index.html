@@ -39,6 +39,15 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-  <script type="text/javascript" src="/js/utils.js"></script>
+
+    <script id="CWaressSearcherTemplate" type="text/template">
+      <%data.forEach(function (element, i) { %>
+      <div class="service_line" data-id="<%=element.product_id%>">
+        <div class="service_line__name"><%=element.name%></div>
+      </div>
+      <%});%>
+    </script>
+    <script type="text/javascript" src="/js/lodash.min.js"></script>
+    <script type="text/javascript" src="/js/utils.js"></script>
   </body>
 </html>

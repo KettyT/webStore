@@ -1,4 +1,4 @@
-package ru.tiutikova.dto;
+package ru.tiutikova.dto.detail;
 
 import ru.tiutikova.dao.entity.VGroupDetailInfoEntity;
 

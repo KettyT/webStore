@@ -34,30 +34,36 @@ class HeaderCmp extends React.Component {
     }
 
     toCart () {
-
-        /*window.utils.getHttpPromise({
-            method: "GET",
-            url: "/api/cart/getFullCartInfo/",
-            contentType: "application/json"
-        }).then(function (response) {
-            let data = JSON.parse(response);
-            console.log(data);
-
-            getGlobalController.catalogStateFunction("cartInfo", data);
-        });*/
         controlFunctions.updateCartPage();
 
         getHistory().push("/cart");
     }
 
+    toCabinet () {
+        getHistory().push("/cabinet");
+    }
+
     render() {
+        let self = this;
+
+        let userInfo = null;
+
+        if (self.state.name && self.state.surname) {
+            userInfo = (<div className="user_statistics__person_info">
+                {self.state.name} {self.state.surname}
+                <span className="lk span_anchor" onClick={this.toCabinet.bind(this)}>Личный кабинет</span>
+            </div>);
+        } else {
+            userInfo = (<div className="user_statistics__person_info"></div>);
+        }
+
         return (
             <div className = "wrapper">
                 <div className = "flex_header">
                     <h1>Auto Market</h1>
                     <div className="user_statistics">
-                        <div className="user_statistics__person_info">{this.state.name} {this.state.surname}</div>
-                        <div className="user_statistics__cart_info" onClick = {this.toCart.bind(this)}>
+                        {userInfo}
+                        <div className="user_statistics__cart_info span_anchor" onClick = {this.toCart.bind(this)}>
                             <div className="user_statistics__cart_items">
                                 {this.state.cartCount}
                             </div>

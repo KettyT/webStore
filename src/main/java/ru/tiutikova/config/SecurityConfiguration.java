@@ -26,10 +26,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         this.userService = userService;
     }
 
-    /*@Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }*/
 
     // роль admin всегда есть доступ к /admin/**
     // роль user всегда есть доступ к /user/**
@@ -40,28 +36,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests().antMatchers("/**").permitAll();
-//        http.authorizeRequests().antMatchers("/api/cart/doOrder").authenticated();
 
-
-                /*.authorizeRequests()
-                .antMatchers("/favicon.ico","/403","/css/**","/js/**", "/webjars/**", "/api/public/login/login").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll();*/
-//        http.anonymous().
-//                .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
-
-//        http.addFilter(authFilter);
         http.addFilterBefore(authFilter, BasicAuthenticationFilter.class);
     }
 
-    /*@Autowired
-    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder());
-    }*/
 }

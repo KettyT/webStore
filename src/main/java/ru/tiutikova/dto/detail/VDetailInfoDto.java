@@ -1,14 +1,14 @@
-package ru.tiutikova.dto;
+package ru.tiutikova.dto.detail;
 
-import ru.tiutikova.dao.entity.VDetailInfoEntity;
+import ru.tiutikova.dao.entity.detail.VDetailInfoEntity;
 
 public class VDetailInfoDto {
 
     private int id;
     private int price;
     private int quantity;
-    private Integer detailGroupId;
-    private String detailGroupName;
+    private Integer detailGroupListId;
+    private String detailGroupListTextTitle;
     private String article;
     private int amountInPackage;
     private String detailName;
@@ -19,8 +19,8 @@ public class VDetailInfoDto {
 
     public VDetailInfoDto(VDetailInfoEntity entity) {
         this.id = entity.getId();
-        this.detailGroupId = entity.getDetailGroupId();
-        this.detailGroupName = entity.getDetailGroupName();
+        this.detailGroupListId = entity.getDetailGroupListId();
+        this.detailGroupListTextTitle = entity.getDetailGroupListTextTitle();
         this.article = entity.getArticle();
         this.amountInPackage = entity.getAmountInPackage();
         this.price = entity.getPrice();
@@ -54,20 +54,20 @@ public class VDetailInfoDto {
         this.quantity = quantity;
     }
 
-    public Integer getDetailGroupId() {
-        return detailGroupId;
+    public Integer getDetailGroupListId() {
+        return detailGroupListId;
     }
 
-    public void setDetailGroupId(Integer detailGroupId) {
-        this.detailGroupId = detailGroupId;
+    public void setDetailGroupListId(Integer detailGroupListId) {
+        this.detailGroupListId = detailGroupListId;
     }
 
-    public String getDetailGroupName() {
-        return detailGroupName;
+    public String getDetailGroupListTextTitle() {
+        return detailGroupListTextTitle;
     }
 
-    public void setDetailGroupName(String detailGroupName) {
-        this.detailGroupName = detailGroupName;
+    public void setDetailGroupListTextTitle(String detailGroupListTextTitle) {
+        this.detailGroupListTextTitle = detailGroupListTextTitle;
     }
 
     public String getArticle() {
@@ -92,5 +92,21 @@ public class VDetailInfoDto {
 
     public void setDetailName(String detailName) {
         this.detailName = detailName;
+    }
+
+    public String getProducerName() {
+        return producerName;
+    }
+
+    public void setProducerName(String producerName) {
+        this.producerName = producerName;
+    }
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
     }
 }

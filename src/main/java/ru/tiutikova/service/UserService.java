@@ -106,6 +106,40 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public UserDto getProfile() {
+        return (UserDto)SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    public ResultDto saveProfile(UserDto dto) {
+
+        if (dto.getName() == null || dto.getName().isEmpty()) {
+            throw new UserException("Поле \"Имя\" не может быть пустым");
+        }
+
+        if (dto.getSurname() == null || dto.getSurname().isEmpty()) {
+            throw new UserException("Поле \"Фамилия\" не может быть пустым");
+        }
+
+        if (dto.getPhone() == null || dto.getPhone().isEmpty()) {
+            throw new UserException("Поле \"Телефон\" не может быть пустым");
+        }
+
+        UserDto existingUserDto = (UserDto)SecurityContextHolder.getContext().getAuthentication();
+
+        UsersEntity usersEntity = new UsersEntity();
+
+        usersEntity.setId(existingUserDto.getId());
+        usersEntity.setName(dto.getName());
+        usersEntity.setSurname(dto.getSurname());
+        usersEntity.setEmail(existingUserDto.getEmail());
+        usersEntity.setPassword(existingUserDto.getPassword());
+        usersEntity.setPhone(dto.getPhone());
+
+        userRepository.save(usersEntity);
+
+        return new ResultDto(true, "Информация успешно сохранена");
+    }
+
     @Transactional
     public ResultDto login(AuthDto dto) {
 

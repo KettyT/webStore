@@ -8,6 +8,7 @@ import ru.tiutikova.UserException;
 import ru.tiutikova.dao.entity.cart.VCartInfoUserEntity;
 import ru.tiutikova.dao.entity.order.OrderDetailsEntity;
 import ru.tiutikova.dao.entity.order.OrdersEntity;
+import ru.tiutikova.dao.entity.order.VOrderDetailEntity;
 import ru.tiutikova.dao.repositories.cart.CartDetailsRepository;
 import ru.tiutikova.dao.repositories.cart.CartRepository;
 import ru.tiutikova.dao.repositories.cart.VCartInfoUserRepository;
@@ -15,8 +16,13 @@ import ru.tiutikova.dao.repositories.detail.StoredDetailsRepository;
 import ru.tiutikova.dao.repositories.order.NaviveOrderDao;
 import ru.tiutikova.dao.repositories.order.OrderDetailsRepository;
 import ru.tiutikova.dao.repositories.order.OrderRepository;
+import ru.tiutikova.dao.repositories.order.VOrderDetailRepository;
 import ru.tiutikova.dto.ResultDto;
+import ru.tiutikova.dto.SimpleDto;
 import ru.tiutikova.dto.UserDto;
+import ru.tiutikova.dto.order.FullOrderInfoDto;
+import ru.tiutikova.dto.order.OrderDetailDto;
+import ru.tiutikova.dto.order.OrderDto;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -42,12 +48,14 @@ public class OrderService {
 
     private StoredDetailsRepository storedDetailsRepository;
 
+    private VOrderDetailRepository viewOrderDetailRepository;
+
     private NaviveOrderDao naviveOrderDao;
 
     @Autowired
     public OrderService(CartDetailsRepository cartDetailsRepository, CartRepository cartRepository, OrderRepository orderRepository,
                         OrderDetailsRepository orderDetailsRepository, StoredDetailsRepository storedDetailsRepository, NaviveOrderDao naviveOrderDao,
-                        VCartInfoUserRepository cartInfoUserRepository) {
+                        VCartInfoUserRepository cartInfoUserRepository, VOrderDetailRepository viewOrderDetailRepository) {
         this.cartDetailsRepository = cartDetailsRepository;
         this.cartRepository = cartRepository;
         this.orderRepository = orderRepository;
@@ -55,6 +63,7 @@ public class OrderService {
         this.storedDetailsRepository = storedDetailsRepository;
         this.naviveOrderDao = naviveOrderDao;
         this.cartInfoUserRepository = cartInfoUserRepository;
+        this.viewOrderDetailRepository = viewOrderDetailRepository;
     }
 
     private void decrementStoredDetailsQuantity(List<VCartInfoUserEntity> cartInfoUserEntityList) {
@@ -126,6 +135,38 @@ public class OrderService {
         clearCartByUserId(userId, cartInfoUserEntityList);
 
         return new ResultDto(true, "Ваш заказ успешно оформлен");
+    }
+
+    public List<OrderDto> getAllOrder () {
+
+        UserDto userDto = (UserDto)SecurityContextHolder.getContext().getAuthentication();
+
+        List<OrdersEntity> orderList = orderRepository.getAllByUserIdOrderByDateCreateDesc(userDto.getId());
+
+        List<OrderDto> orderDtoList = new ArrayList<>();
+
+        for (OrdersEntity entity : orderList) {
+            orderDtoList.add(new OrderDto(entity));
+        }
+
+        return orderDtoList;
+    }
+
+    public FullOrderInfoDto getOrderById (SimpleDto dto) {
+
+        UserDto userDto = (UserDto)SecurityContextHolder.getContext().getAuthentication();
+
+        OrdersEntity entity = orderRepository.getByIdAndUserId(dto.getId(), userDto.getId());
+
+        List<VOrderDetailEntity> orderDetailsEntityList = viewOrderDetailRepository.getAllByOrderIdOrderById(dto.getId());
+
+        List<OrderDetailDto> orderDetailDtoList = new ArrayList<>();
+
+        for (VOrderDetailEntity orderDetailsEntity : orderDetailsEntityList) {
+            orderDetailDtoList.add(new OrderDetailDto(orderDetailsEntity));
+        }
+
+        return new FullOrderInfoDto(entity, orderDetailDtoList);
     }
 
 }

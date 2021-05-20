@@ -38,7 +38,7 @@ class Catalog extends React.Component {
         return function (linkTo, detailGroupId) {
             window.utils.getHttpPromise({
                 method: "POST",
-                url: "/api/details/getDetailInfoById",
+                url: "/api/details/getDetailGroupInfoById",
                 contentType: "application/json",
                 jsonData: {
                     id: +detailGroupId
@@ -83,7 +83,35 @@ class Catalog extends React.Component {
         }
     }
 
-    updateCartStatistics() {
+    /*
+        представление деталей на диаграмме.
+     */
+    getDetailGropListInfoById() {
+        const history = getHistory();
+        let self = this;
+
+        return function (detailId) {
+            window.utils.getHttpPromise({
+                method: "POST",
+                url: "/api/details/getDetailInfo",
+                contentType: "application/json",
+                jsonData: {
+                    id: +detailId
+                }
+            }).then(function (response) {
+                let data = JSON.parse(response);
+                console.log(data);
+
+                self.setState(Object.assign(self.state, {
+                    detailInfo: data
+                }));
+            });
+
+            history.push("/detailInfo/" + detailId);
+        };
+    }
+
+    /*updateCartStatistics() {
 
         window.utils.getHttpPromise({
             method: "GET",
@@ -99,12 +127,12 @@ class Catalog extends React.Component {
         });
 
 
-    }
+    }*/
 
     componentDidMount() {
         let self = this;
 
-        this.updateCartStatistics();
+        // this.updateCartStatistics();
 
         window.utils.getHttpPromise({
             method: "GET",
@@ -187,7 +215,25 @@ class Catalog extends React.Component {
                                     <div id="DIV_12">
                                         <div id="DIV_13">
                                             <span id="SPAN_14">Поиск:</span>
-                                            <div id="DIV_15">
+
+                                            <div id="main_searcher" className="main_searcher" tabIndex="2">
+                                                <div className="form_wrapper__input">
+                                                    <input id="street_field" className="standart_input search_field" tabIndex="1"
+                                                           placeholder="Начинайте вводить название города, улицы..."/>
+                                                    <div className="selected_container_button">
+                                                        <span className="selected_button"></span>
+                                                    </div>
+                                                    <div className="preloader_wait">
+                                                        <img className="ui_ico_loading" src="/images/loader.png"
+                                                             alt=""/>
+                                                    </div>
+                                                </div>
+                                                <div className="selected_field">
+
+                                                </div>
+                                            </div>
+
+                                            {/*<div id="DIV_15">
                                                 <div id="DIV_16">
                                                 </div>
                                                 <input type="text" placeholder="Введите название узла или детали"
@@ -196,7 +242,7 @@ class Catalog extends React.Component {
                                                 </div>
                                             </div>
                                             <div id="DIV_19">
-                                            </div>
+                                            </div>*/}
                                         </div>
 
                                         <div className="catalog_cmp">

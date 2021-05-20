@@ -14,6 +14,7 @@ public class UserDto implements Authentication {
     private String surname;
     private String password;
     private String sessionId;
+    private String phone;
 
     boolean authentificated = false;
 
@@ -26,6 +27,7 @@ public class UserDto implements Authentication {
         this.name = entity.getName();
         this.surname = entity.getSurname();
         this.password = entity.getPassword();
+        this.phone = entity.getPhone();
 //        this.sessionId = sessionId;
     }
 
@@ -106,5 +108,13 @@ public class UserDto implements Authentication {
     @Override
     public void setAuthenticated(boolean b) throws IllegalArgumentException {
         authentificated = b;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

@@ -1,4 +1,4 @@
-package ru.tiutikova.dao.repositories;
+package ru.tiutikova.dao.repositories.detail;
 
 import org.springframework.data.repository.CrudRepository;
 import ru.tiutikova.dao.entity.VGroupDetailInfoEntity;

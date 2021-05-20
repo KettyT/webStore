@@ -3,21 +3,16 @@ package ru.tiutikova.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.tiutikova.dao.entity.VDetailInfoEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import ru.tiutikova.dao.entity.VGroupDetailInfoEntity;
-import ru.tiutikova.dao.entity.detail.DetailGroupEntity;
+import ru.tiutikova.dao.entity.detail.*;
 import ru.tiutikova.dao.repositories.DetailGroupRepository;
-import ru.tiutikova.dao.repositories.VDetailInfoRepository;
-import ru.tiutikova.dao.repositories.VGroupDetailInfoRepository;
+import ru.tiutikova.dao.repositories.detail.*;
 import ru.tiutikova.dto.DetailGroupDto;
 import ru.tiutikova.dto.SimpleDto;
-import ru.tiutikova.dto.VDetailInfoDto;
-import ru.tiutikova.dto.VGroupDetailInfoDto;
+import ru.tiutikova.dto.detail.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class DetailsService {
@@ -28,13 +23,23 @@ public class DetailsService {
 
     private VDetailInfoRepository detailInfoRepository;
 
+    private DetailGroupListRepository detailGroupListRepository;
+
+    private DetailImagePositionRepository detailImagePositionRepository;
+
+    private DetailsRepository detailsRepository;
+
     @Autowired
     public DetailsService(DetailGroupRepository detailGroupRepository,
                           VGroupDetailInfoRepository groupDetailInfoRepository,
-                          VDetailInfoRepository detailInfoRepository) {
+                          VDetailInfoRepository detailInfoRepository, DetailGroupListRepository detailGroupListRepository,
+                          DetailImagePositionRepository detailImagePositionRepository, DetailsRepository detailsRepository) {
         this.detailGroupRepository = detailGroupRepository;
         this.groupDetailInfoRepository = groupDetailInfoRepository;
         this.detailInfoRepository = detailInfoRepository;
+        this.detailGroupListRepository = detailGroupListRepository;
+        this.detailImagePositionRepository = detailImagePositionRepository;
+        this.detailsRepository = detailsRepository;
     }
 
     public List<DetailGroupDto> getDetailGroupTree() {
@@ -72,12 +77,80 @@ public class DetailsService {
         return result;
     }
 
-    public VDetailInfoDto getDetailInfo(SimpleDto dto) {
-        VDetailInfoEntity entity = detailInfoRepository.getById(dto.getId());
+    public FullDetailInfo getDetailInfo(SimpleDto dto) {
 
-        return new VDetailInfoDto(entity);
+        DetailsEntity detailEntry = detailsRepository.getById(dto.getId());
+
+        FullDetailInfo result = new FullDetailInfo(detailEntry);
+
+        List<VDetailInfoEntity> detailInfoEntityList = detailInfoRepository.getAllByProducerDetailCodeOrderById(detailEntry.getCode());
+
+        for (VDetailInfoEntity detailInfoEntity : detailInfoEntityList) {
+            if (Objects.equals(detailInfoEntity.getArticle(), detailEntry.getOriginalArticle())) {
+                result.getDetailInfoDtoList().add(new VDetailInfoDto(detailInfoEntity));
+            } else {
+                result.getAnalogInfoDtoList().add(new VDetailInfoDto(detailInfoEntity));
+            }
+        }
+
+        return result;
     }
 
+    public List<DetailGroupListDto> getDetailGroupInfoById(SimpleDto dto) {
+
+        List<DetailGroupListEntity> detailGroupListEntityList = detailGroupListRepository.getByDetailGroupIdOrderById(dto.getId());
+        List<Integer> detailGroupListId = new ArrayList<>();
+        Map<Integer, DetailGroupListDto> detailGroupListDtoMap = new HashMap<>();
+
+        List<DetailGroupListDto> detailGroupListDtoList = new ArrayList<>();
+
+        for (DetailGroupListEntity entity : detailGroupListEntityList) {
+            detailGroupListId.add(entity.getId());
+
+            DetailGroupListDto detailGroupListDto = new DetailGroupListDto(entity);
+
+            detailGroupListDtoMap.put(entity.getId(), detailGroupListDto);
+            detailGroupListDtoList.add(detailGroupListDto);
+        }
+
+        // todo
+        List<DetailsEntity> detailInfoDtoList = detailsRepository.getAllByDetailGroupListIdInOrderById(detailGroupListId);
+
+        for (DetailsEntity entity : detailInfoDtoList) {
+            DetailGroupListDto detailGroupListDto = detailGroupListDtoMap.get(entity.getDetailGroupListId());
+
+            detailGroupListDto.getDetailDtoList().add(new DetailDto(entity));
+        }
+
+        return detailGroupListDtoList;
+    }
+
+    public FullDetailGroupListDto getDetailGroupInfoListById (SimpleDto dto) {
+
+        DetailGroupListEntity detailGroupListEntity = detailGroupListRepository.getById(dto.getId());
+        List<Integer> detaiList = new ArrayList<>();
+        detaiList.add(detailGroupListEntity.getId());
+
+        List<DetailsEntity> detailInfoDtoList = detailsRepository.getAllByDetailGroupListIdInOrderById(detaiList);
+
+        List<DetailImagePositionEntity> detailImagePositionEntityList = detailImagePositionRepository.getAllByDetailGroupListIdOrderById(detailGroupListEntity.getId());
+
+        FullDetailGroupListDto result = new FullDetailGroupListDto(detailGroupListEntity);
+
+        for (DetailsEntity detailsEntity : detailInfoDtoList) {
+            result.getDetailDtoList().add(new DetailDto(detailsEntity));
+        }
+
+        for (DetailImagePositionEntity entity : detailImagePositionEntityList) {
+            result.getDetailImagePositionDtoList().add(new DetailImagePositionDto(entity));
+        }
+
+        return result;
+    }
+
+    public List<DetailGroupDto> searchPath(@RequestBody SearchDto dto) {
+
+    }
 
 
 }

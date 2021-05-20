@@ -35,10 +35,12 @@ create or replace view  v_detail_info as (
         sd.id,
         sd.price,
         sd.quantity,
-        dg.id as detail_group_id,
-        dg.name as detail_group_name,
+        dgl.id as detail_group_list_id,
+        dgl.text_title as detail_group_list_text_title,
         pd.article,
+        pd.code as producer_detail_code,
         pd.amount_in_package,
+        d.id as detail_id,
         d.name as detail_name,
         p.name as producer_name,
         c.name as country_name
@@ -48,7 +50,7 @@ create or replace view  v_detail_info as (
         join details d on d.id = pd.detail_id
         join producers p on p.id = pd.producer_id
         left join countries c on p.country_id = c.id
-        left join details_groups dg on dg.id = pd.producer_id
+        left join detail_group_list dgl on dgl.id = d.detail_group_list_id
 );
 
 create or replace view  v_cart_info as (
