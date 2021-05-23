@@ -7,22 +7,21 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.tiutikova.UserException;
 import ru.tiutikova.dao.entity.cart.VCartInfoUserEntity;
 import ru.tiutikova.dao.entity.order.OrderDetailsEntity;
+import ru.tiutikova.dao.entity.order.OrderRefundRequestEntity;
 import ru.tiutikova.dao.entity.order.OrdersEntity;
 import ru.tiutikova.dao.entity.order.VOrderDetailEntity;
 import ru.tiutikova.dao.repositories.cart.CartDetailsRepository;
 import ru.tiutikova.dao.repositories.cart.CartRepository;
 import ru.tiutikova.dao.repositories.cart.VCartInfoUserRepository;
 import ru.tiutikova.dao.repositories.detail.StoredDetailsRepository;
-import ru.tiutikova.dao.repositories.order.NaviveOrderDao;
-import ru.tiutikova.dao.repositories.order.OrderDetailsRepository;
-import ru.tiutikova.dao.repositories.order.OrderRepository;
-import ru.tiutikova.dao.repositories.order.VOrderDetailRepository;
+import ru.tiutikova.dao.repositories.order.*;
 import ru.tiutikova.dto.ResultDto;
 import ru.tiutikova.dto.SimpleDto;
 import ru.tiutikova.dto.UserDto;
 import ru.tiutikova.dto.order.FullOrderInfoDto;
 import ru.tiutikova.dto.order.OrderDetailDto;
 import ru.tiutikova.dto.order.OrderDto;
+import ru.tiutikova.dto.order.RefundDto;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -50,20 +49,24 @@ public class OrderService {
 
     private VOrderDetailRepository viewOrderDetailRepository;
 
-    private NaviveOrderDao naviveOrderDao;
+    private NativeOrderDao nativeOrderDao;
+
+    private OrderRefundRequestRepository orderRefundRequestRepository;
 
     @Autowired
     public OrderService(CartDetailsRepository cartDetailsRepository, CartRepository cartRepository, OrderRepository orderRepository,
-                        OrderDetailsRepository orderDetailsRepository, StoredDetailsRepository storedDetailsRepository, NaviveOrderDao naviveOrderDao,
-                        VCartInfoUserRepository cartInfoUserRepository, VOrderDetailRepository viewOrderDetailRepository) {
+                        OrderDetailsRepository orderDetailsRepository, StoredDetailsRepository storedDetailsRepository, NativeOrderDao nativeOrderDao,
+                        VCartInfoUserRepository cartInfoUserRepository, VOrderDetailRepository viewOrderDetailRepository,
+                        OrderRefundRequestRepository orderRefundRequestRepository) {
         this.cartDetailsRepository = cartDetailsRepository;
         this.cartRepository = cartRepository;
         this.orderRepository = orderRepository;
         this.orderDetailsRepository = orderDetailsRepository;
         this.storedDetailsRepository = storedDetailsRepository;
-        this.naviveOrderDao = naviveOrderDao;
+        this.nativeOrderDao = nativeOrderDao;
         this.cartInfoUserRepository = cartInfoUserRepository;
         this.viewOrderDetailRepository = viewOrderDetailRepository;
+        this.orderRefundRequestRepository = orderRefundRequestRepository;
     }
 
     private void decrementStoredDetailsQuantity(List<VCartInfoUserEntity> cartInfoUserEntityList) {
@@ -73,7 +76,7 @@ public class OrderService {
             quantityMap.put(cartInfoUserEntity.getDetailId(), cartInfoUserEntity.getStoreQuantity() - cartInfoUserEntity.getQuantity());
         }
 
-        naviveOrderDao.updateStoreDetailsQuantity(quantityMap);
+        nativeOrderDao.updateStoreDetailsQuantity(quantityMap);
     }
 
     private void clearCartByUserId(int userId, List<VCartInfoUserEntity> cartInfoUserEntityList) {
@@ -167,6 +170,33 @@ public class OrderService {
         }
 
         return new FullOrderInfoDto(entity, orderDetailDtoList);
+    }
+
+    @Transactional
+    public SimpleDto doRefund (RefundDto dto) {
+
+        List<OrderRefundRequestEntity> refundList = new ArrayList<>();
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+        Instant nowInstant = localDateTime.toInstant(ZoneOffset.UTC);
+
+        UserDto existingUserDto = (UserDto)SecurityContextHolder.getContext().getAuthentication();
+
+        for (OrderDetailDto orderDetailDto : dto.getRefundedOrderList()) {
+            OrderRefundRequestEntity refundEntity = new OrderRefundRequestEntity();
+            refundEntity.setDateCreate(Timestamp.from(nowInstant));
+            refundEntity.setStatus("created");
+            refundEntity.setQuantity(orderDetailDto.getQuantity());
+            refundEntity.setText(dto.getRefundReason());
+            refundEntity.setOrderDetailId(orderDetailDto.getId());
+            refundEntity.setUserId(existingUserDto.getId());
+
+            refundList.add(refundEntity);
+        }
+
+        orderRefundRequestRepository.saveAll(refundList);
+
+        return new ResultDto(true, "Заявка успешно создана");
     }
 
 }

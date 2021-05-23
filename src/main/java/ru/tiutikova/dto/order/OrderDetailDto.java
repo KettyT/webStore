@@ -14,6 +14,9 @@ public class OrderDetailDto {
     private int refundedQuantity;
     private String name;
 
+    public OrderDetailDto() {
+    }
+
     public OrderDetailDto(VOrderDetailEntity entity) {
         this.id = entity.getId();
         this.orderId = entity.getOrderId();

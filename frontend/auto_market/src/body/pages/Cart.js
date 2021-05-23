@@ -1,5 +1,6 @@
 import React from "react";
 import CartCountPicker from "../cart/CartCountPicker";
+import {controlFunctions} from "../../component/GlobalController";
 
 // export default Header;
 
@@ -18,25 +19,8 @@ class Cart extends React.Component {
         });
     }
 
-    setItemToCartAndUpdate (detailId, quantity) {
-       /* window.utils.getHttpPromise({
-            method: "GET",
-            url: "/api/order/doOrder",
-            contentType: "application/json",
-            jsonData: {
-            }
-        }).then(function (response) {
-            let data = JSON.parse(response);
-            console.log(data);
-
-            self.setState({
-                data: {
-                    successMessage: "Ваш заказ успешно оформлен. Обращайтесь ещё."
-                }
-            });
-        }, function (response) {
-            window.location.href = "/login";
-        });*/
+    onChangeQuantityInCart (detailId, quantity) {
+        controlFunctions.setItemToCartAndUpdate(detailId, quantity);
     }
 
     doOrder () {
@@ -90,7 +74,7 @@ class Cart extends React.Component {
                             <td>{idx + 1}</td>
                             <td>{elm.itemName}</td>
                             <td className="flex_center">
-                                <CartCountPicker detailId={elm.detailId} value={elm.quantity}/>
+                                <CartCountPicker onItemClick={self.onChangeQuantityInCart} detailId={elm.detailId} value={elm.quantity}/>
                             </td>
                             <td>{self.formatter.format(elm.price)}</td>
 

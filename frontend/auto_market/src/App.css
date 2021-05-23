@@ -362,6 +362,11 @@ td, th {
   font-size: 14px;
 }
 
+.textarea_style {
+  min-width: 500px;
+  min-height: 200px;
+}
+
 .search_field {
   display: flex;
   max-width: 573px;

@@ -9,12 +9,12 @@ import javax.persistence.Query;
 import java.util.Map;
 
 @Repository
-public class NaviveOrderDao {
+public class NativeOrderDao {
 
     private EntityManager entityManager;
 
     @Autowired
-    public NaviveOrderDao(EntityManager entityManager) {
+    public NativeOrderDao(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 

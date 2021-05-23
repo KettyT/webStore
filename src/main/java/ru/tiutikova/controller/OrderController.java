@@ -9,6 +9,7 @@ import ru.tiutikova.dto.ResultDto;
 import ru.tiutikova.dto.SimpleDto;
 import ru.tiutikova.dto.order.FullOrderInfoDto;
 import ru.tiutikova.dto.order.OrderDto;
+import ru.tiutikova.dto.order.RefundDto;
 import ru.tiutikova.service.OrderService;
 
 import java.util.List;
@@ -39,4 +40,8 @@ public class OrderController {
         return orderService.getOrderById(dto);
     }
 
+    @RequestMapping(value = "doRefund", method = RequestMethod.POST)
+    public SimpleDto doRefund (@RequestBody RefundDto dto) {
+        return orderService.doRefund(dto);
+    }
 }

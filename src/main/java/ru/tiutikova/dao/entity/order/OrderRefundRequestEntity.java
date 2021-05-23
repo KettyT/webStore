@@ -12,8 +12,12 @@ public class OrderRefundRequestEntity {
     private Timestamp dateCreate;
     private Timestamp dateClosed;
     private String status;
+    private int quantity;
+    private int orderDetailId;
+    private int userId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public Integer getId() {
         return id;
@@ -61,6 +65,33 @@ public class OrderRefundRequestEntity {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Column(name = "quantity")
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    @Column(name = "order_detail_id")
+    public int getOrderDetailId() {
+        return orderDetailId;
+    }
+
+    public void setOrderDetailId(int orderDetailId) {
+        this.orderDetailId = orderDetailId;
+    }
+
+    @Column(name = "user_id")
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     @Override

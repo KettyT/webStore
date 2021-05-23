@@ -4,7 +4,8 @@
 export const getGlobalController = {
     updateHeaderCartInfo: null,
     catalogStateFunction: null,
-    updatePictureDetailInfo: null
+    updatePictureDetailInfo: null,
+    backToOrder: null // возврат к заказу после возврата.
 };
 
 export const controlFunctions = {
@@ -54,10 +55,10 @@ export const controlFunctions = {
         popupWindow.classList.remove("hidden");
         overlay.classList.remove("hidden");
 
-        /*overlay.addEventListener("click", function () {
+        overlay.addEventListener("click", function () {
             popupWindow.classList.add("hidden");
             overlay.classList.add("hidden");
-        });*/
+        });
     }
 };
 

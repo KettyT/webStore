@@ -327,10 +327,5 @@ document.addEventListener("DOMContentLoaded", function () {
     let popupWindow = document.querySelector(".popup_window");
     let overlay = document.querySelector(".overlay");
 
-    overlay.addEventListener("click", function () {
-        popupWindow.classList.add("hidden");
-        overlay.classList.add("hidden");
-    });
-
     window.waresSearcher = waresSearcher;
 });

@@ -1,4 +1,6 @@
 import React from "react";
+import Refund from "./Refund";
+import {getGlobalController} from "../../../component/GlobalController";
 
 class OrderPage extends React.Component {
 
@@ -6,16 +8,32 @@ class OrderPage extends React.Component {
         super();
 
         this.state = {
-            data: {}
+            data: {},
+            pickedOrderDetailIds: null,
+            mode: null,
         };
 
         this.formatter = new Intl.NumberFormat('ru-RU', {
             style: 'currency',
             currency: 'RUB',
         });
+
+        getGlobalController.backToOrder = this.backToOrder.bind(this);
     }
 
-    getOrder () {
+    backToOrder (callback) {
+        let self = this;
+
+        self.getOrder(function (){
+            self.setState(Object.assign(self.state, {
+                mode: ""
+            }));
+
+            callback();
+        });
+    }
+
+    getOrder (callback) {
         let self = this;
 
         let href = window.location.href;
@@ -38,7 +56,30 @@ class OrderPage extends React.Component {
                     order: data
                 }
             }));
+
+            if (callback) {
+                callback();
+            }
         });
+    }
+
+    doRefundAction (evt) {
+        let self = this;
+
+        let orderCheckboxList = document.querySelectorAll(".selected_order_checkbox");
+
+        let pickedOrderDetailIds = [];
+
+        for (let i = 0; i < orderCheckboxList.length; i++) {
+            if (orderCheckboxList[i].checked) {
+                pickedOrderDetailIds.push(+orderCheckboxList[i].getAttribute("data-order-id"));
+            }
+        }
+
+        this.setState(Object.assign(self.state, {
+            mode: "REFUND",
+            pickedOrderDetailIds: pickedOrderDetailIds
+        }));
     }
 
     componentDidMount () {
@@ -54,13 +95,10 @@ class OrderPage extends React.Component {
 
             </div>);
         }
-        /*let orderArr = [];
 
-
-
-        for (let i = 0; i < orderArr.length; i++) {
-            orderArr.push();
-        }*/
+        if (self.state.mode === "REFUND") {
+            return (<Refund order={self.state.data.order} pickedOrderDetailIds={this.state.pickedOrderDetailIds}/>);
+        }
 
         return (<div className="">
             <div className="classic_row">
@@ -93,6 +131,7 @@ class OrderPage extends React.Component {
 
             <table className="classic_table_style">
                 <tr>
+                    <th></th>
                     <th>№</th>
                     <th>Название</th>
                     <th>Количество</th>
@@ -103,7 +142,8 @@ class OrderPage extends React.Component {
 
                 {self.state.data.order.orderDetailDtoList && self.state.data.order.orderDetailDtoList.map(function (elm, idx) {
                     return (
-                        <tr>
+                        <tr key={idx}>
+                            <td><input type = "checkbox" className="selected_order_checkbox" data-order-id={elm.id}/></td>
                             <td>{idx + 1}</td>
                             <td>{elm.name}</td>
                             <td className="column_center">
@@ -119,6 +159,10 @@ class OrderPage extends React.Component {
                 })}
 
             </table>
+
+            <div>
+                <button onClick={this.doRefundAction.bind(this)}>Оформить возврат</button>
+            </div>
         </div>);
     }
 }

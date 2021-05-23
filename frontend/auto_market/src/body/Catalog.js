@@ -226,8 +226,10 @@ class Catalog extends React.Component {
 
                                             <div id="main_searcher" className="main_searcher" tabIndex="2">
                                                 <div className="form_wrapper__input">
-                                                    <input id="street_field" onKeyDown={self.onTreeSearchKeyDown.bind(self)} className="standart_input search_field" tabIndex="1"
-                                                           placeholder="Для поиска введите не менее 5 символов ..."/>
+                                                    <input id="street_field" onKeyDown={self.onTreeSearchKeyDown.bind(self)}
+                                                           className="standart_input search_field" tabIndex="1"
+                                                           placeholder="Для поиска введите не менее 5 символов ..."
+                                                           autocomplete="off"/>
                                                     <div className="selected_container_button">
                                                         <span className="selected_button"></span>
                                                     </div>
