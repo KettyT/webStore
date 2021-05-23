@@ -25,7 +25,12 @@ public class CartController {
 
     @RequestMapping(value = "addToCart", method = RequestMethod.POST)
     public CartDto addToCart(@RequestBody CartDto dto) {
-        return cartService.addToCart(dto);
+        return cartService.setToCart(dto, true);
+    }
+
+    @RequestMapping(value = "setToCart", method = RequestMethod.POST)
+    public CartDto setToCart(@RequestBody CartDto dto) {
+        return cartService.setToCart(dto, false);
     }
 
     @RequestMapping(value = "getCartStatistics", method = RequestMethod.GET)

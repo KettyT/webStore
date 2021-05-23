@@ -39,6 +39,10 @@ class HeaderCmp extends React.Component {
         getHistory().push("/cart");
     }
 
+    toMainPage() {
+        getHistory().push("/");
+    }
+
     toCabinet () {
         getHistory().push("/cabinet");
     }
@@ -60,7 +64,7 @@ class HeaderCmp extends React.Component {
         return (
             <div className = "wrapper">
                 <div className = "flex_header">
-                    <h1>Auto Market</h1>
+                    <h1 onClick={this.toMainPage.bind(this)}  style={{cursor: "pointer"}}>Auto Market</h1>
                     <div className="user_statistics">
                         {userInfo}
                         <div className="user_statistics__cart_info span_anchor" onClick = {this.toCart.bind(this)}>

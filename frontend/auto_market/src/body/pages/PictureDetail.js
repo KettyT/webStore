@@ -1,4 +1,6 @@
 import React from "react";
+import {getHistory} from "../../component/history";
+import {Link} from "react-router-dom";
 
 class PictureDetail extends React.Component {
 
@@ -28,6 +30,19 @@ class PictureDetail extends React.Component {
 
         // getGlobalController.updatePictureDetailInfo = this.updatePictureDetailInfo;
 
+    }
+
+    toDetailPage (evt) {
+
+        evt.stopPropagation();
+        evt.preventDefault();
+
+        let target = evt.target;
+
+        let tr = target.closest("tr");
+        let detailId = tr.getAttribute("data-detail-id");
+
+        getHistory().push("/detailInfo/" + detailId);
     }
 
     updatePictureDetailInfo () {
@@ -133,8 +148,9 @@ class PictureDetail extends React.Component {
                                 <tr data-detail-id={detailDto.id} className="detail_row_item"
                                     onMouseEnter={self.onDetailHover.bind(self)} onMouseLeave={self.onDetailMouseLeave.bind(self)}>
                                     <td>{detailDto.originalArticle}</td>
-                                    <td><a href="#">{detailDto.name}</a></td>
-                                    <td><a href="#">Цена</a></td>
+                                    <td><Link to={"/detailInfo/" + detailDto.id}>{detailDto.name}</Link></td>
+                                    {/*<td><a onClick={self.toDetailPage.bind(self)} href="#">{detailDto.name}</a></td>*/}
+                                    <td><a onClick={self.toDetailPage.bind(self)} href="#">Цена</a></td>
                                 </tr>
                             );
                         })}

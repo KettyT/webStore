@@ -32,6 +32,11 @@ public class DetailsController {
         return detailsService.getDetailGroupTree();
     }
 
+    @RequestMapping(value = "findInDetailGroupTree", method = RequestMethod.POST)
+    public List<DetailGroupDto> findInDetailGroupTree(@RequestBody SearchDto dto) {
+        return detailsService.findInDetailGroupTree(dto);
+    }
+
     @RequestMapping(value = "getDetailInfoById", method = RequestMethod.POST)
     public List<VGroupDetailInfoDto> getDetailInfoById(@RequestBody SimpleDto dto) {
         return detailsService.getDetailInfoById(dto);
@@ -58,7 +63,7 @@ public class DetailsController {
     }
 
     @RequestMapping(value = "searchPath", method = RequestMethod.POST)
-    public List<DetailDto> searchPath(@RequestBody SearchDto dto) {
+    public List<DetailInPictureDto> searchPath(@RequestBody SearchDto dto) {
         return detailsService.searchPath(dto);
     }
 

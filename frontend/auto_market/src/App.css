@@ -7,6 +7,7 @@ body {
 ul {
   padding: 0;
   margin: 0;
+  list-style: none;
 }
 
 a {
@@ -63,6 +64,20 @@ td, th {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.column_center {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.classic_row {
+  display: flex;
+}
+.classic_row__title{
+  margin-right: 20px;
+}
+.classic_row__value {
+  font-weight: bold;
 }
 
 .wrapper {
@@ -237,7 +252,59 @@ td, th {
   width: 50px;
 }
 
+.catalog_cmp li {
+  margin-left: 20px;
+}
 
+.classic_table_style {
+  width: 100%;
+}
+.classic_table_style td, .classic_table_style th {
+  padding: 0 10px;
+}
+
+.popup_window {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  margin-top: -75px;
+  margin-left: -200px;
+
+  width: 400px;
+  height: 150px;
+
+  padding: 40px 50px;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  background: #fff;
+
+  z-index: 150;
+}
+.popup_window .title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.popup_window .message_body {
+
+}
+.hidden {
+  display: none;
+}
+
+
+
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  cursor: pointer;
+
+  background: rgba(0, 0, 0, 0.15)
+}
 
 .wares_searcher {
   flex-grow: 1;
@@ -281,12 +348,18 @@ td, th {
 }
 .selected_field .service_line {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   background: #fff;
   font-size: inherit;
   padding: 15px 20px;
   box-sizing: border-box;
   cursor: pointer;
+}
+.service_line__alias {
+  padding-left: 10px;
+  color: #808389;
+  font-size: 14px;
 }
 
 .search_field {
@@ -308,6 +381,10 @@ td, th {
   flex-grow: 1;
   width: 293px;
   height: 28px;
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 @-webkit-keyframes spin {

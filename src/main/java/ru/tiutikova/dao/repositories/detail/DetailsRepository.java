@@ -12,5 +12,4 @@ public interface DetailsRepository extends CrudRepository<DetailsEntity, Long> {
     List<DetailsEntity> getAllByDetailGroupListIdInOrderById(List<Integer> detailGroupListIds);
 
     List<DetailsEntity> getAllByNameIsLike(String query);
-
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import ru.tiutikova.UserException;
 import ru.tiutikova.dao.entity.auth.SessionsEntity;
 import ru.tiutikova.dao.entity.cart.CartDetailsEntity;
 import ru.tiutikova.dao.entity.cart.CartEntity;
@@ -139,15 +140,7 @@ public class CartService {
         return cartDetailsRepository.save(cartDetailsEntity);
     }
 
-    @Transactional
-    public CartDto addToCart(CartDto dto) {
-        SecurityContext sc = SecurityContextHolder.getContext();
-        UserDto userDto = (UserDto)sc.getAuthentication();
-
-        int userId = userDto.getId();
-
-        String sessionKey = userDto.getSessionId();
-
+    private IVCartInfoEntity getExistingCartInfoEntity (CartDto dto, int userId, String sessionKey) {
         IVCartInfoEntity existingCartInfoEntity;
 
         if (userId > 0) {
@@ -156,6 +149,24 @@ public class CartService {
             existingCartInfoEntity = cartInfoSessionRepository.getBySessionCodeAndDetailId(sessionKey, dto.getId());
         }
 
+        return existingCartInfoEntity;
+    }
+
+   /* @Transactional
+    public CartDto addToCart(CartDto dto) {
+        return setToCart(dto, true);
+    }*/
+
+    @Transactional
+    public CartDto setToCart(CartDto dto, boolean addMode) {
+        SecurityContext sc = SecurityContextHolder.getContext();
+        UserDto userDto = (UserDto)sc.getAuthentication();
+
+        int userId = userDto.getId();
+
+        String sessionKey = userDto.getSessionId();
+
+        IVCartInfoEntity existingCartInfoEntity = getExistingCartInfoEntity(dto, userId, sessionKey);
 
         if (existingCartInfoEntity == null) {
             CartDetailsEntity cartDetailsEntity = createNewCartDetail(sessionKey, userId, dto);
@@ -165,7 +176,13 @@ public class CartService {
 
         CartDetailsEntity exiatingCartDetailsEntity = cartDetailsRepository.getById(existingCartInfoEntity.getId());
 
-        exiatingCartDetailsEntity.setQuantity(Math.min(exiatingCartDetailsEntity.getQuantity() + dto.getCount(), existingCartInfoEntity.getStoreQuantity()));
+        int newQuantity = (addMode) ? (exiatingCartDetailsEntity.getQuantity() + dto.getCount()) : dto.getCount();
+
+        if (newQuantity > existingCartInfoEntity.getStoreQuantity()) {
+            throw new UserException("Максимальное количество товаров: " + existingCartInfoEntity.getStoreQuantity());
+        }
+
+        exiatingCartDetailsEntity.setQuantity(Math.min(newQuantity, existingCartInfoEntity.getStoreQuantity()));
         cartDetailsRepository.save(exiatingCartDetailsEntity);
 
         return getCartStatistics(userId, sessionKey);

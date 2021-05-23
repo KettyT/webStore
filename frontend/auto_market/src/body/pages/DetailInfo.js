@@ -34,11 +34,7 @@ class DetailInfo extends React.Component {
             }
         }).then(function (response) {
             let data = JSON.parse(response);
-            console.log(data);
 
-            debugger;
-            // count
-            // totalSumm
             getGlobalController.updateHeaderCartInfo(data.count);
         });
 

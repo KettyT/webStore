@@ -22,9 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }).then(function (response) {
             let data = JSON.parse(response);
-            console.log(data);
 
-            debugger;
             if (data.success) {
                 location.href = "/";
             }

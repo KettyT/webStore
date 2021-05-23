@@ -54,7 +54,9 @@ class DetailGroupInfo extends React.Component {
                             {detailGroupInfoArr && detailGroupInfoArr.map(function (elm) {
 
                                 return (<div className="detail_group_list_item">
-                                    <div className="detail_group_list_item__image">
+                                    <div onClick={self.handleDetailGroupList.bind(self)}
+                                         data-detail-group-list-id={elm.id}
+                                         className="detail_group_list_item__image pointer">
                                         <img src={elm.url} width="200" />
                                     </div>
                                     <div className="detail_group_list_item__details">

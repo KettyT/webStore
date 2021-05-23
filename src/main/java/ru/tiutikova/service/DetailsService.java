@@ -3,7 +3,6 @@ package ru.tiutikova.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import ru.tiutikova.dao.entity.VGroupDetailInfoEntity;
 import ru.tiutikova.dao.entity.detail.*;
 import ru.tiutikova.dao.repositories.DetailGroupRepository;
@@ -30,26 +29,49 @@ public class DetailsService {
 
     private DetailsRepository detailsRepository;
 
+    private DetailInPictureRepository detailInPictureRepository;
+
     @Autowired
     public DetailsService(DetailGroupRepository detailGroupRepository,
                           VGroupDetailInfoRepository groupDetailInfoRepository,
                           VDetailInfoRepository detailInfoRepository, DetailGroupListRepository detailGroupListRepository,
-                          DetailImagePositionRepository detailImagePositionRepository, DetailsRepository detailsRepository) {
+                          DetailImagePositionRepository detailImagePositionRepository, DetailsRepository detailsRepository,
+                          DetailInPictureRepository detailInPictureRepository) {
         this.detailGroupRepository = detailGroupRepository;
         this.groupDetailInfoRepository = groupDetailInfoRepository;
         this.detailInfoRepository = detailInfoRepository;
         this.detailGroupListRepository = detailGroupListRepository;
         this.detailImagePositionRepository = detailImagePositionRepository;
         this.detailsRepository = detailsRepository;
+        this.detailInPictureRepository = detailInPictureRepository;
     }
 
-    public List<DetailGroupDto> getDetailGroupTree() {
-
+    private List<DetailGroupDto> reverseMapDetailGroupResult (List<DetailGroupEntity> detailGroupEntityList) {
         List<DetailGroupDto> result = new ArrayList<>();
 
         Map<Integer, DetailGroupDto> detailGroupDtoMap = new HashMap<>();
 
-        List<DetailGroupEntity> detailGroupEntityList = detailGroupRepository.getDetailGroupListTree();
+        for (int i = detailGroupEntityList.size() - 1; i > -1 ; i--) {
+            DetailGroupEntity detailGroupEntity = detailGroupEntityList.get(i);
+
+            DetailGroupDto detailGroupDto = new DetailGroupDto(detailGroupEntity);
+
+            detailGroupDtoMap.put(detailGroupDto.getId(), detailGroupDto);
+
+            if (detailGroupDto.getParentId() == null) {
+                result.add(detailGroupDto);
+            } else {
+                detailGroupDtoMap.get(detailGroupDto.getParentId()).addChild(detailGroupDto);
+            }
+        }
+
+        return result;
+    }
+
+    private List<DetailGroupDto> mapDetailGroupResult (List<DetailGroupEntity> detailGroupEntityList) {
+        List<DetailGroupDto> result = new ArrayList<>();
+
+        Map<Integer, DetailGroupDto> detailGroupDtoMap = new HashMap<>();
 
         for (DetailGroupEntity detailGroupEntity : detailGroupEntityList) {
 
@@ -65,6 +87,26 @@ public class DetailsService {
         }
 
         return result;
+    }
+
+    public List<DetailGroupDto> getDetailGroupTree() {
+
+        List<DetailGroupEntity> detailGroupEntityList = detailGroupRepository.getDetailGroupListTree();
+
+        return mapDetailGroupResult(detailGroupEntityList);
+    }
+
+    public List<DetailGroupDto> findInDetailGroupTree(SearchDto dto) {
+
+        List<DetailInPictureDto> detailDtoList = searchPath(dto);
+
+        List<Integer> idList = detailDtoList.stream().map((elm) -> {
+            return elm.getId();
+        }).collect(Collectors.toList());
+
+        List<DetailGroupEntity> detailGroupEntityList = detailGroupRepository.getDetailGroupListTreeByDetailIds(idList);
+
+        return reverseMapDetailGroupResult(detailGroupEntityList);
     }
 
     public List<VGroupDetailInfoDto> getDetailInfoById(SimpleDto dto) {
@@ -149,12 +191,54 @@ public class DetailsService {
         return result;
     }
 
-    public List<DetailDto> searchPath(@RequestBody SearchDto dto) {
+    public List<DetailInPictureDto> searchPath(SearchDto dto) {
         List<DetailsEntity> detailsEntityList = detailsRepository.getAllByNameIsLike("%" + dto.getQuery() + "%");
 
-        return detailsEntityList.stream().map((entity) -> {
-            return new DetailDto(entity);
+        List<DetailInPictureDto> detailInPictureDtoList = new ArrayList<>();
+
+        List<Integer> detailIdList = detailsEntityList.stream().map((entity) -> {
+            return entity.getId();
         }).collect(Collectors.toList());
+
+        List<DetailInPictureEntity> detailInPictureEntityList = detailInPictureRepository.getAllDetailInPicture(detailIdList);
+
+        for (DetailsEntity detailsEntity : detailsEntityList) {
+            DetailInPictureEntity objectToFind = new DetailInPictureEntity();
+            objectToFind.setId(detailsEntity.getId());
+
+            int index = Collections.binarySearch(detailInPictureEntityList, objectToFind, (elm1, elm2) -> {
+                return elm1.getId() - elm2.getId();
+            });
+
+            if (index < 0) {
+                continue;
+            }
+
+            String code = detailInPictureEntityList.get(index).getProducerCode();
+
+            DetailInPictureDto detailInPictureDto = new DetailInPictureDto(detailsEntity);
+
+            for (DetailInPictureEntity detailInPictureEntity : detailInPictureEntityList) {
+                if (Objects.equals(detailInPictureEntity.getProducerCode(), code)) {
+
+                    if (detailInPictureEntity.getIsOriginal() == 1) {
+                        detailInPictureDto.getAliasList().add(0, detailInPictureEntity.getName());
+                    } else {
+                        detailInPictureDto.getAliasList().add(detailInPictureEntity.getName());
+                    }
+                }
+            }
+
+            detailInPictureDtoList.add(detailInPictureDto);
+        }
+
+
+
+        /*return detailsEntityList.stream().map((entity) -> {
+            return new DetailDto(entity);
+        }).collect(Collectors.toList());*/
+
+        return detailInPictureDtoList;
     }
 
 

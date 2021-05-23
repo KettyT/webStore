@@ -118,7 +118,14 @@
         var self = this;
 
         self.selection = self.findInLocalDateById((id != 0) ? id : false);
-        self.input.value = self.selection[self.fields.displayField];
+
+        if (self.selection.aliasList && self.selection.aliasList.length > 0) {
+            self.input.value = self.selection.aliasList[0];
+        } else {
+            self.input.value = self.selection[self.fields.displayField];
+        }
+
+
         self.closeSelect();
 
         if (!self.events || !self.events.onSelect) {
@@ -221,6 +228,11 @@
         var template = "<%data.forEach(function (element, i) { %>\n" +
             "      <div class=\"service_line\" data-id=\"<%=element.id%>\">\n" +
             "        <div class=\"service_line__name\"><%=element.name%></div>\n" +
+            "        <div class=\"service_line__alias\">" +
+            "           <%element.aliasList.forEach(function (alias, i) { %>" +
+            "               <div class=\"service_line__alias_name\"><%=alias%></div>" +
+            "           <%}); %>" +
+            "        </div>\n" +
             "      </div>\n" +
             "      <%});%>";
         if (!template) {
@@ -273,6 +285,14 @@
         loader.style.display = "none";
     };
 
+    CTextSearcher.prototype.getSearchText = function () {
+        return this.input.value;
+    };
+
+    CTextSearcher.prototype.getInputElm = function () {
+        return this.input;
+    };
+
     window.CTextSearcher = CTextSearcher;
 })();
 
@@ -292,15 +312,25 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         events: {
             onSelect: function () {
-                var selections = this.wrapperElement.parentNode.querySelector(".sections");
+                /*var selections = this.wrapperElement.parentNode.querySelector(".sections");
                 var catName = selections.getAttribute("category_id");
                 if (catName && catName !== "") {
                     var categoryParam = "&category_id=" + catName;
                 } else {
                     categoryParam = "";
                 }
-                location.href = "/index.php?route=product/search&search=" + waresSearcher.getRow().name + categoryParam;
+                location.href = "/index.php?route=product/search&search=" + waresSearcher.getRow().name + categoryParam;*/
             }
         }
     });
+
+    let popupWindow = document.querySelector(".popup_window");
+    let overlay = document.querySelector(".overlay");
+
+    overlay.addEventListener("click", function () {
+        popupWindow.classList.add("hidden");
+        overlay.classList.add("hidden");
+    });
+
+    window.waresSearcher = waresSearcher;
 });

@@ -45,8 +45,6 @@ class Catalog extends React.Component {
                 }
             }).then(function (response) {
                 let data = JSON.parse(response);
-                console.log("getDetailInfoById");
-                console.log(data);
 
                 self.setState(Object.assign(self.state, {
                     detailGroupInfo: data
@@ -111,23 +109,37 @@ class Catalog extends React.Component {
         };
     }
 
-    /*updateCartStatistics() {
+    onTreeSearchKeyDown (evt) {
+        let self = this;
+
+        if (evt.keyCode !== 13) {
+            return;
+        }
+
+        let searchText = window.waresSearcher.getSearchText();
+
+        if (searchText.length < 5) {
+            window.waresSearcher.getInputElm.value = "Для поиска, введите не менее 5 символов";
+            return;
+        }
 
         window.utils.getHttpPromise({
-            method: "GET",
-            url: "/api/cart/getCartStatistics",
+            method: "POST",
+            url: "/api/details/findInDetailGroupTree",
             contentType: "application/json",
             jsonData: {
+                query: searchText
             }
         }).then(function (response) {
             let data = JSON.parse(response);
             console.log(data);
 
-            getGlobalController.updateHeaderCartInfo(data.count, data);
+            self.setState({
+                data: data
+            });
         });
 
-
-    }*/
+    }
 
     componentDidMount() {
         let self = this;
@@ -179,10 +191,6 @@ class Catalog extends React.Component {
         let data = this.state.data;
         let self = this;
 
-        /*if (tree.length > 0) {
-            debugger;
-        }*/
-
         for (let i = 0; i < data.length; i++) {
             tree.push (<MenuItem clickHandler = {self.handleLindToDetailGroup()} id={data[i].id} name = {data[i].name} children = {data[i].detailGroupDtoList} />);
         }
@@ -218,8 +226,8 @@ class Catalog extends React.Component {
 
                                             <div id="main_searcher" className="main_searcher" tabIndex="2">
                                                 <div className="form_wrapper__input">
-                                                    <input id="street_field" className="standart_input search_field" tabIndex="1"
-                                                           placeholder="Начинайте вводить название города, улицы..."/>
+                                                    <input id="street_field" onKeyDown={self.onTreeSearchKeyDown.bind(self)} className="standart_input search_field" tabIndex="1"
+                                                           placeholder="Для поиска введите не менее 5 символов ..."/>
                                                     <div className="selected_container_button">
                                                         <span className="selected_button"></span>
                                                     </div>
@@ -246,7 +254,9 @@ class Catalog extends React.Component {
                                         </div>
 
                                         <div className="catalog_cmp">
-                                            {tree}
+                                            <ul>
+                                                {tree}
+                                            </ul>
                                         </div>
 
                                         <div id="DIV_1554">

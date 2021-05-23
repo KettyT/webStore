@@ -1,4 +1,5 @@
 import React from "react";
+import CartCountPicker from "../cart/CartCountPicker";
 
 // export default Header;
 
@@ -10,6 +11,32 @@ class Cart extends React.Component {
         this.state = {
             data: {}
         };
+
+        this.formatter = new Intl.NumberFormat('ru-RU', {
+            style: 'currency',
+            currency: 'RUB',
+        });
+    }
+
+    setItemToCartAndUpdate (detailId, quantity) {
+       /* window.utils.getHttpPromise({
+            method: "GET",
+            url: "/api/order/doOrder",
+            contentType: "application/json",
+            jsonData: {
+            }
+        }).then(function (response) {
+            let data = JSON.parse(response);
+            console.log(data);
+
+            self.setState({
+                data: {
+                    successMessage: "Ваш заказ успешно оформлен. Обращайтесь ещё."
+                }
+            });
+        }, function (response) {
+            window.location.href = "/login";
+        });*/
     }
 
     doOrder () {
@@ -36,6 +63,8 @@ class Cart extends React.Component {
     }
 
     render() {
+        let self = this;
+
         if (this.state.data.successMessage) {
             return (<div>{this.state.data.successMessage}</div>);
         }
@@ -45,7 +74,7 @@ class Cart extends React.Component {
         }
 
         return (<div>
-            <table>
+            <table className="classic_table_style">
                 <tr>
                     <th>№</th>
                     <th>Название</th>
@@ -60,11 +89,13 @@ class Cart extends React.Component {
                         <tr>
                             <td>{idx + 1}</td>
                             <td>{elm.itemName}</td>
-                            <td>{elm.quantity}</td>
-                            <td>{elm.price}</td>
+                            <td className="flex_center">
+                                <CartCountPicker detailId={elm.detailId} value={elm.quantity}/>
+                            </td>
+                            <td>{self.formatter.format(elm.price)}</td>
 
                             <td>{elm.amountInPackage}</td>
-                            <td>{elm.quantity * elm.price}</td>
+                            <td>{self.formatter.format(elm.quantity * elm.price)}</td>
                         </tr>);
                 })}
 
@@ -74,7 +105,7 @@ class Cart extends React.Component {
                 Всего товаров в корзине: {this.props.cartInfo.count}
             </div>
             <div>
-                На сумму: {this.props.cartInfo.totalSumm}
+                На сумму: {self.formatter.format(this.props.cartInfo.totalSumm)}
             </div>
             <br/>
             <br/>
