@@ -18,10 +18,7 @@ import ru.tiutikova.dao.repositories.order.*;
 import ru.tiutikova.dto.ResultDto;
 import ru.tiutikova.dto.SimpleDto;
 import ru.tiutikova.dto.UserDto;
-import ru.tiutikova.dto.order.FullOrderInfoDto;
-import ru.tiutikova.dto.order.OrderDetailDto;
-import ru.tiutikova.dto.order.OrderDto;
-import ru.tiutikova.dto.order.RefundDto;
+import ru.tiutikova.dto.order.*;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -31,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -100,6 +98,10 @@ public class OrderService {
 
         List<VCartInfoUserEntity> cartInfoUserEntityList = cartInfoUserRepository.getByUserId(userId);
 
+        if (cartInfoUserEntityList.isEmpty()) {
+            throw new UserException("Нет выбранных товаров. Добавьте товары в корзину и повторите поаытку.");
+        }
+
         LocalDateTime localDateTime = LocalDateTime.now();
         Instant nowInstant = localDateTime.toInstant(ZoneOffset.UTC);
 
@@ -163,13 +165,35 @@ public class OrderService {
 
         List<VOrderDetailEntity> orderDetailsEntityList = viewOrderDetailRepository.getAllByOrderIdOrderById(dto.getId());
 
+        Map<Integer, VOrderDetailEntity> integerorderDetailsEntityListMap = new HashMap<>();
+
+        for (VOrderDetailEntity orderDetailEntity : orderDetailsEntityList) {
+            integerorderDetailsEntityListMap.put(orderDetailEntity.getId(), orderDetailEntity);
+        }
+
+
+        List<Integer> orderDetailIdList = orderDetailsEntityList.stream().map((elm) -> elm.getId()).collect(Collectors.toList());
+
+        List<OrderRefundRequestEntity> orderRefundRequestEntityList = orderRefundRequestRepository.getAllRefundRequestByOrderDetailList(orderDetailIdList);
+
+        List<OrderRefundRequestDto> orderRefundRequestDtoList = orderRefundRequestEntityList.stream().map((OrderRefundRequestEntity orderRefundRequestEntity) -> {
+            OrderRefundRequestDto orderRefundRequestDto = new OrderRefundRequestDto(orderRefundRequestEntity);
+
+            VOrderDetailEntity orderDetailEntity = integerorderDetailsEntityListMap.get(orderRefundRequestDto.getOrderDetailId());
+
+            orderRefundRequestDto.setOrderDetailName(orderDetailEntity.getName());
+            orderRefundRequestDto.setOrderDetailPrice(orderDetailEntity.getPrice());
+
+            return orderRefundRequestDto;
+        }).collect(Collectors.toList());
+
         List<OrderDetailDto> orderDetailDtoList = new ArrayList<>();
 
         for (VOrderDetailEntity orderDetailsEntity : orderDetailsEntityList) {
             orderDetailDtoList.add(new OrderDetailDto(orderDetailsEntity));
         }
 
-        return new FullOrderInfoDto(entity, orderDetailDtoList);
+        return new FullOrderInfoDto(entity, orderDetailDtoList, orderRefundRequestDtoList);
     }
 
     @Transactional

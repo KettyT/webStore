@@ -1,6 +1,7 @@
 import React from "react";
 import CartCountPicker from "../cart/CartCountPicker";
 import {controlFunctions} from "../../component/GlobalController";
+import {getHistory} from "../../component/history";
 
 // export default Header;
 
@@ -20,12 +21,30 @@ class Cart extends React.Component {
     }
 
     onChangeQuantityInCart (detailId, quantity) {
+        controlFunctions.updateCartStatistics();
         controlFunctions.setItemToCartAndUpdate(detailId, quantity);
     }
 
     doOrder () {
         let self = this;
-        
+
+        let deliveryStyle = document.querySelector(".delivery_style");
+
+        let radioButtonList = deliveryStyle.querySelectorAll("input");
+
+        let deliveryChecked = false;
+
+        for (let i = 0; i < radioButtonList.length; i++) {
+            if (radioButtonList[i].checked) {
+                deliveryChecked = true;
+            }
+        }
+
+        if (!deliveryChecked) {
+            controlFunctions.setUserMessage("Ошибка", "Нужно выбрать пункт выдачи");
+            return;
+        }
+
         window.utils.getHttpPromise({
             method: "GET",
             url: "/api/order/doOrder",
@@ -41,8 +60,26 @@ class Cart extends React.Component {
                     successMessage: "Ваш заказ успешно оформлен. Обращайтесь ещё."
                 }
             });
-        }, function (response) {
-            window.location.href = "/login";
+
+            getHistory().push("/cabinet/orders")
+
+        }, function (response, statusCode) {
+            let data = JSON.parse(response);
+
+            if (data.status === 404) {
+                window.location.href = "/login";
+                return;
+            }
+
+            console.log(data);
+
+            controlFunctions.setUserMessage("Произошла ошибка", data.message);
+        });
+    }
+
+    clearCart () {
+        controlFunctions.clearCart(function () {
+            controlFunctions.updateCartStatistics();
         });
     }
 
@@ -74,7 +111,7 @@ class Cart extends React.Component {
                             <td>{idx + 1}</td>
                             <td>{elm.itemName}</td>
                             <td className="flex_center">
-                                <CartCountPicker onItemClick={self.onChangeQuantityInCart} detailId={elm.detailId} value={elm.quantity}/>
+                                <CartCountPicker onItemClick={self.onChangeQuantityInCart} keyItem={elm.id} detailId={elm.detailId} value={elm.quantity}/>
                             </td>
                             <td>{self.formatter.format(elm.price)}</td>
 
@@ -85,11 +122,14 @@ class Cart extends React.Component {
 
             </table>
 
-            <div>
+            <div className="gray_background">
                 Всего товаров в корзине: {this.props.cartInfo.count}
             </div>
-            <div>
+            <div className="gray_background">
                 На сумму: {self.formatter.format(this.props.cartInfo.totalSumm)}
+            </div>
+            <div className="align_right_row">
+                <button onClick = {this.clearCart.bind(this)}>Очистить корзину</button>
             </div>
             <br/>
             <br/>

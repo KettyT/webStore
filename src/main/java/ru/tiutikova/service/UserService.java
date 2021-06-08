@@ -23,6 +23,7 @@ import ru.tiutikova.dto.auth.AuthDto;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Objects;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -85,7 +86,7 @@ public class UserService implements UserDetailsService {
             return;
         }
 
-        if (mainCart == null && secondCart != null) {
+        if (mainCart == null && secondCart != null || (mainCart != null && secondCart != null && Objects.equals(mainCart.getId(), secondCart.getId()))) {
             mainCart = secondCart;
             mainCart.setUserId(session.getUserId());
 
@@ -102,7 +103,7 @@ public class UserService implements UserDetailsService {
 
         if (mainCart != null && secondCart != null) {
             cartNativeDao.moveStoredDetails(secondCart.getId(), mainCart.getId());
-            cartRepository.deleteById(Long.valueOf(secondCart.getId()));
+            cartRepository.deleteById(secondCart.getId());
         }
     }
 
@@ -171,6 +172,17 @@ public class UserService implements UserDetailsService {
         sessionRepository.save(session);
 
         handleAllUserCarts (session);
+
+        return new ResultDto(true);
+    }
+
+    public ResultDto logout() {
+        UserDto userDto = getProfile();
+        String sessionId = userDto.getSessionId();
+
+        SessionsEntity sessionsEntity = sessionRepository.getBySessionCode(sessionId);
+        sessionsEntity.setUserId(null);
+        sessionRepository.save(sessionsEntity);
 
         return new ResultDto(true);
     }

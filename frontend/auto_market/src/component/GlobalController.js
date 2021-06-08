@@ -42,6 +42,31 @@ export const controlFunctions = {
             controlFunctions.setUserMessage("Произошла ошибка", data.message);
         });
     },
+    clearCart: function (callback) {
+        window.utils.getHttpPromise({
+            method: "POST",
+            url: "/api/cart/clearCart/",
+            contentType: "application/json",
+            jsonData: {
+
+            }
+        }).then(function (response) {
+            let data = JSON.parse(response);
+            console.log(data);
+
+            controlFunctions.updateCartPage();
+
+            if (callback) {
+                callback();
+            }
+
+        }, function (response) {
+            let data = JSON.parse(response);
+            console.log(data);
+
+            controlFunctions.setUserMessage("Произошла ошибка", data.message);
+        });
+    },
     setUserMessage: function (title, message) {
         let popupWindow = document.querySelector(".popup_window");
         let overlay = document.querySelector(".overlay");
@@ -59,6 +84,45 @@ export const controlFunctions = {
             popupWindow.classList.add("hidden");
             overlay.classList.add("hidden");
         });
+    },
+    logout: function () {
+        window.utils.getHttpPromise({
+            method: "GET",
+            url: "/api/auth/logout",
+            contentType: "application/json",
+            jsonData: {
+
+            }
+        }).then(function (response) {
+            let data = JSON.parse(response);
+            console.log(data);
+
+            controlFunctions.updateCartStatistics();
+            controlFunctions.updateCartPage();
+        }, function (response) {
+            let data = JSON.parse(response);
+            console.log(data);
+
+
+            controlFunctions.setUserMessage("Произошла ошибка", data.message);
+        });
+    },
+    updateCartStatistics: function () {
+
+        window.utils.getHttpPromise({
+            method: "GET",
+            url: "/api/cart/getCartStatistics",
+            contentType: "application/json",
+            jsonData: {
+            }
+        }).then(function (response) {
+            let data = JSON.parse(response);
+            console.log(data);
+
+            getGlobalController.updateHeaderCartInfo(data.count, data);
+        });
+
+
     }
 };
 

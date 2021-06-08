@@ -11,7 +11,11 @@ class CartCountPicker extends React.Component {
     }
 
     onItemClick(evt) {
-        this.props.onItemClick(this.props.detailId, +evt.target.value);
+        if (this.props.onItemClick) {
+            this.props.onItemClick(this.props.detailId, +evt.target.value);
+        }
+
+
         // controlFunctions.setItemToCartAndUpdate(this.props.detailId, +evt.target.value)
     }
 
@@ -26,9 +30,9 @@ class CartCountPicker extends React.Component {
         for (let i = 0; i < max; i++) {
 
             if (value === i) {
-                optionList.push(<option key={i} selected value={i}>{i}</option>);
+                optionList.push(<option key={this.props.keyItem} selected value={i}>{i}</option>);
             } else {
-                optionList.push(<option key={i} value={i}>{i}</option>);
+                optionList.push(<option key={this.props.keyItem} value={i}>{i}</option>);
             }
         }
 

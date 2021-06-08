@@ -47,18 +47,34 @@ class HeaderCmp extends React.Component {
         getHistory().push("/cabinet");
     }
 
+    logout (evt) {
+        controlFunctions.logout();
+
+        evt.preventDefault();
+        evt.stopPropagation();
+    }
+
+    toLogin () {
+        getHistory().push("/login");
+    }
+
     render() {
         let self = this;
 
         let userInfo = null;
+        let authBth = "<div class='auth_btn'></div>";
 
         if (self.state.name && self.state.surname) {
             userInfo = (<div className="user_statistics__person_info">
                 {self.state.name} {self.state.surname}
                 <span className="lk span_anchor" onClick={this.toCabinet.bind(this)}>Личный кабинет</span>
             </div>);
+
+            authBth = (<a className='auth_btn' onClick={this.logout.bind(this)}>Выйти</a>);
         } else {
             userInfo = (<div className="user_statistics__person_info"></div>);
+
+            authBth = (<a href="/login" className='auth_btn'>Войти</a>);
         }
 
         return (
@@ -67,11 +83,14 @@ class HeaderCmp extends React.Component {
                     <h1 onClick={this.toMainPage.bind(this)}  style={{cursor: "pointer"}}>Auto Market</h1>
                     <div className="user_statistics">
                         {userInfo}
-                        <div className="user_statistics__cart_info span_anchor" onClick = {this.toCart.bind(this)}>
-                            <div className="user_statistics__cart_items">
-                                {this.state.cartCount}
+                        <div className="header_bottom_cart_info">
+                            <div className="user_statistics__cart_info span_anchor" onClick = {this.toCart.bind(this)}>
+                                <div className="user_statistics__cart_items">
+                                    {this.state.cartCount}
+                                </div>
+                                {/*Товаров в корзине: {this.state.cartCount}*/}
                             </div>
-                            {/*Товаров в корзине: {this.state.cartCount}*/}
+                            {authBth}
                         </div>
                     </div>
                 </div>

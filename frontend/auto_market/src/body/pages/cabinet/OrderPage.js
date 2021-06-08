@@ -163,6 +163,37 @@ class OrderPage extends React.Component {
             <div>
                 <button onClick={this.doRefundAction.bind(this)}>Оформить возврат</button>
             </div>
+
+            {/*orderRefundRequestDtoList*/}
+
+            <h3>Заявки на возврат</h3>
+            <table className="classic_table_style">
+                <tr>
+                    <th>№</th>
+                    <th>Название</th>
+                    <th>Количество</th>
+                    <th>Цена</th>
+                    <th>Общая сумма</th>
+                    <th>Статус</th>
+                </tr>
+
+                {self.state.data.order.orderDetailDtoList && self.state.data.order.orderRefundRequestDtoList.map(function (elm, idx) {
+                    return (
+                        <tr key={idx}>
+                            <td>{idx + 1}</td>
+                            <td>{elm.orderDetailName}</td>
+                            <td className="column_center">
+                                {elm.quantity}
+                                {/*<CartCountPicker detailId={elm.detailId} value={elm.quantity}/>*/}
+                            </td>
+                            <td className="column_center">{self.formatter.format(elm.orderDetailPrice)}</td>
+                            <td className="column_center">{self.formatter.format(elm.quantity * elm.orderDetailPrice)}</td>
+                            <td className="column_center">{elm.status}</td>
+                        </tr>);
+                })}
+
+            </table>
+
         </div>);
     }
 }

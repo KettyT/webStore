@@ -4,14 +4,6 @@ import {Link} from "react-router-dom";
 
 class PictureDetail extends React.Component {
 
-    /*constructor () {
-        super();
-
-        this.state = {
-            data: []
-        };
-    }*/
-
     constructor () {
         super();
 
@@ -27,9 +19,6 @@ class PictureDetail extends React.Component {
     }
 
     componentDidMount() {
-
-        // getGlobalController.updatePictureDetailInfo = this.updatePictureDetailInfo;
-
     }
 
     toDetailPage (evt) {

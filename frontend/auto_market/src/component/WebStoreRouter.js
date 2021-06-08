@@ -4,7 +4,7 @@ import Catalog from "../body/Catalog";
 import {createBrowserHistory} from 'history'
 import {setHistory} from "./history";
 import CabinetMain from "../body/pages/cabinet/CabinetMain";
-import {getGlobalController} from "./GlobalController";
+import {controlFunctions} from "./GlobalController";
 import PictureDetail from "../body/pages/PictureDetail";
 
 // import {controlFunctions, getGlobalController} from "../component/GlobalController";
@@ -17,7 +17,7 @@ class WebStoreRouter extends React.Component {
         this.data = [];
     }*/
 
-    updateCartStatistics() {
+    /*updateCartStatistics() {
 
         window.utils.getHttpPromise({
             method: "GET",
@@ -33,12 +33,12 @@ class WebStoreRouter extends React.Component {
         });
 
 
-    }
+    }*/
 
     componentDidMount() {
         let self = this;
 
-        this.updateCartStatistics();
+        controlFunctions.updateCartStatistics();
 
     }
 

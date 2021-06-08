@@ -11,7 +11,6 @@ import java.util.List;
 @Repository
 public interface DetailGroupRepository extends CrudRepository<DetailGroupEntity, Long> {
 
-//    @Query("SELECT u FROM User u WHERE u.status = 1")
     @Query(
             value = "with recursive t1 as (\n" +
                     "    select     id, name, code, parent_id, 0 as level\n" +
@@ -46,5 +45,6 @@ public interface DetailGroupRepository extends CrudRepository<DetailGroupEntity,
                     "select * from t1;",
             nativeQuery = true)
     List<DetailGroupEntity> getDetailGroupListTreeByDetailIds(@Param(("detailIdList") ) List<Integer> detailIdList);
-
 }
+
+

@@ -11,10 +11,9 @@ import ru.tiutikova.dao.entity.cart.CartEntity;
 import ru.tiutikova.dao.entity.cart.IVCartInfoEntity;
 import ru.tiutikova.dao.entity.cart.VCartInfoSessionEntity;
 import ru.tiutikova.dao.repositories.SessionRepository;
-import ru.tiutikova.dao.repositories.cart.CartDetailsRepository;
-import ru.tiutikova.dao.repositories.cart.CartRepository;
-import ru.tiutikova.dao.repositories.cart.VCartInfoSessionRepository;
-import ru.tiutikova.dao.repositories.cart.VCartInfoUserRepository;
+import ru.tiutikova.dao.repositories.cart.*;
+import ru.tiutikova.dto.ResultDto;
+import ru.tiutikova.dto.SimpleDto;
 import ru.tiutikova.dto.UserDto;
 import ru.tiutikova.dto.cart.CartDto;
 import ru.tiutikova.dto.cart.FullCartInfoDto;
@@ -40,15 +39,21 @@ public class CartService {
 
     private CartRepository cartRepository;
 
+    private CartNativeDao cartNativeDao;
+
+    @Autowired
+    private CartService cartService;
+
     @Autowired
     public CartService(VCartInfoSessionRepository cartInfoSessionRepository, VCartInfoUserRepository cartInfoUserRepository,
                        CartDetailsRepository cartDetailsRepository,
-                       SessionRepository sessionRepository, CartRepository cartRepository) {
+                       SessionRepository sessionRepository, CartRepository cartRepository,CartNativeDao cartNativeDao) {
         this.cartInfoSessionRepository = cartInfoSessionRepository;
         this.cartDetailsRepository = cartDetailsRepository;
         this.sessionRepository = sessionRepository;
         this.cartRepository = cartRepository;
         this.cartInfoUserRepository = cartInfoUserRepository;
+        this.cartNativeDao = cartNativeDao;
     }
 
     private SessionsEntity createSession (String sessionCode) {
@@ -83,7 +88,8 @@ public class CartService {
     public CartDto getCartStatistics (int userId, String sessionKey) {
         List<? extends IVCartInfoEntity> cartInfoEntityList;
         if (userId > 0) {
-            cartInfoEntityList = cartInfoUserRepository.getByUserId(userId);
+//            cartInfoEntityList = cartInfoUserRepository.getByUserId(userId);
+            cartInfoEntityList = cartNativeDao.getCartInfoByUserId(userId);
         } else {
             cartInfoEntityList = cartInfoSessionRepository.getAllBySessionCode(sessionKey);
         }
@@ -158,20 +164,14 @@ public class CartService {
     }*/
 
     @Transactional
-    public CartDto setToCart(CartDto dto, boolean addMode) {
-        SecurityContext sc = SecurityContextHolder.getContext();
-        UserDto userDto = (UserDto)sc.getAuthentication();
-
-        int userId = userDto.getId();
-
-        String sessionKey = userDto.getSessionId();
+   public void doUpdateSaveCart (CartDto dto, boolean addMode, String sessionKey, Integer userId) {
 
         IVCartInfoEntity existingCartInfoEntity = getExistingCartInfoEntity(dto, userId, sessionKey);
 
         if (existingCartInfoEntity == null) {
             CartDetailsEntity cartDetailsEntity = createNewCartDetail(sessionKey, userId, dto);
 
-            return getCartStatistics(userId, sessionKey);
+            return;
         }
 
         CartDetailsEntity exiatingCartDetailsEntity = cartDetailsRepository.getById(existingCartInfoEntity.getId());
@@ -182,8 +182,26 @@ public class CartService {
             throw new UserException("Максимальное количество товаров: " + existingCartInfoEntity.getStoreQuantity());
         }
 
+        if (newQuantity <= 0) {
+            // Удаляем из корзины
+            cartDetailsRepository.delete(exiatingCartDetailsEntity);
+
+            return;
+        }
+
         exiatingCartDetailsEntity.setQuantity(Math.min(newQuantity, existingCartInfoEntity.getStoreQuantity()));
         cartDetailsRepository.save(exiatingCartDetailsEntity);
+   }
+
+    public CartDto setToCart(CartDto dto, boolean addMode) {
+        SecurityContext sc = SecurityContextHolder.getContext();
+        UserDto userDto = (UserDto)sc.getAuthentication();
+
+        int userId = userDto.getId();
+
+        String sessionKey = userDto.getSessionId();
+
+        cartService.doUpdateSaveCart(dto, addMode, sessionKey, userId);
 
         return getCartStatistics(userId, sessionKey);
     }
@@ -219,6 +237,17 @@ public class CartService {
     public FullCartInfoDto doOrder() {
 
         return null;
+    }
+
+    @Transactional
+    public SimpleDto clearCart() {
+
+        UserDto userDto = (UserDto)SecurityContextHolder.getContext().getAuthentication();
+
+        CartEntity cartEntity = cartRepository.getByUserId(userDto.getId());
+        cartDetailsRepository.deleteAllByCartId(cartEntity.getId());
+
+        return new ResultDto(true);
     }
 
 

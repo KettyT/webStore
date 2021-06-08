@@ -25,4 +25,9 @@ public class AuthController  {
         return userService.login(dto);
     }
 
+    @RequestMapping(value = "logout", method = RequestMethod.GET)
+    public ResultDto logout() {
+        return userService.logout();
+    }
+
 }

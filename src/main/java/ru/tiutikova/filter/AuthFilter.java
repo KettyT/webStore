@@ -108,17 +108,6 @@ public class AuthFilter implements Filter {
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(userDto);
 
-        /*try {
-            UserDto userDto = authService.getUserAndPermissions(sessionKey);
-//            ((HttpServletRequest) request).getUserPrincipal()
-        } catch (Exception ex) {
-            LOGGER.error("");
-//            ((HttpServletResponse)response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            RequestDispatcher rd = ((HttpServletRequest) request).getRequestDispatcher("/login");
-            rd.forward(request,response);
-            return;
-        }*/
-
         chain.doFilter(request, response);
     }
 

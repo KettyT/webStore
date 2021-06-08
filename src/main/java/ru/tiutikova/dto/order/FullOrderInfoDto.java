@@ -9,9 +9,13 @@ public class FullOrderInfoDto extends OrderDto {
 
     private List<OrderDetailDto> orderDetailDtoList = new ArrayList<>();
 
-    public FullOrderInfoDto(OrdersEntity entity, List<OrderDetailDto> orderDetailDtoList) {
+    private  List<OrderRefundRequestDto> orderRefundRequestDtoList = new ArrayList<>();
+
+    public FullOrderInfoDto(OrdersEntity entity, List<OrderDetailDto> orderDetailDtoList,
+                            List<OrderRefundRequestDto> orderRefundRequestDtoList) {
         super(entity);
         this.orderDetailDtoList = orderDetailDtoList;
+        this.orderRefundRequestDtoList = orderRefundRequestDtoList;
     }
 
     public List<OrderDetailDto> getOrderDetailDtoList() {
@@ -20,5 +24,13 @@ public class FullOrderInfoDto extends OrderDto {
 
     public void setOrderDetailDtoList(List<OrderDetailDto> orderDetailDtoList) {
         this.orderDetailDtoList = orderDetailDtoList;
+    }
+
+    public List<OrderRefundRequestDto> getOrderRefundRequestDtoList() {
+        return orderRefundRequestDtoList;
+    }
+
+    public void setOrderRefundRequestDtoList(List<OrderRefundRequestDto> orderRefundRequestDtoList) {
+        this.orderRefundRequestDtoList = orderRefundRequestDtoList;
     }
 }

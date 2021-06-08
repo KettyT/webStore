@@ -7,6 +7,7 @@ import {getHistory} from "../component/history";
 import DetailInfo from "./pages/DetailInfo";
 import Cart from "./pages/Cart";
 import {controlFunctions, getGlobalController} from "../component/GlobalController";
+import MainPage from "./pages/MainPage";
 // import {} from 'react-router-dom';
 
 // export default Header;
@@ -309,6 +310,9 @@ class Catalog extends React.Component {
                                 </Route>
                                 <Route path = "/cart">
                                     <Cart cartInfo = {this.state.cartInfo}/>
+                                </Route>
+                                <Route path = "/**">
+                                    <MainPage/>
                                 </Route>
                             </Switch>
 

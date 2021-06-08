@@ -120,7 +120,7 @@ class DetailInfo extends React.Component {
 
                                     {this.props.detailInfo.analogInfoDtoList && this.props.detailInfo.analogInfoDtoList.map(function (detailInfoDto) {
                                         return (<div className="row_full_width">
-                                            <span id="dinfo_SPAN_17"><a rel="noreferrer" id="dinfo_A_18">{detailInfoDto.detailName}</a></span>
+                                            <span id="dinfo_SPAN_17"><a rel="noreferrer" className="dinfo_A_18_cls">{detailInfoDto.detailName}</a></span>
                                             <div id="dinfo_DIV_25">
                                                 <div id="dinfo_DIV_26">
                                                     <div id="dinfo_DIV_27">

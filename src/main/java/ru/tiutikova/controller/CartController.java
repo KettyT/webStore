@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import ru.tiutikova.dto.SimpleDto;
 import ru.tiutikova.dto.UserDto;
 import ru.tiutikova.dto.cart.CartDto;
 import ru.tiutikova.dto.cart.FullCartInfoDto;
@@ -32,6 +33,12 @@ public class CartController {
     public CartDto setToCart(@RequestBody CartDto dto) {
         return cartService.setToCart(dto, false);
     }
+
+    @RequestMapping(value = "clearCart", method = RequestMethod.POST)
+    public SimpleDto clearCart() {
+        return cartService.clearCart();
+    }
+
 
     @RequestMapping(value = "getCartStatistics", method = RequestMethod.GET)
     public CartDto getCartStatistics () {
