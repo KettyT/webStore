@@ -1,0 +1,4 @@
+INSERT INTO auto_market.v_cart_info_user (id, quantity, store_quantity, price, amount_in_package, item_name, session_id, cart_id, detail_id, user_id) VALUES (134, 2, 12, 527.00, 1, 'Сальник переднего приводного вала, правый / Сальник хвостовика
+', 8, 28, 55, 1);
+INSERT INTO auto_market.v_cart_info_user (id, quantity, store_quantity, price, amount_in_package, item_name, session_id, cart_id, detail_id, user_id) VALUES (135, 1, 10, 126.00, 1, 'Сальник привода', 8, 28, 93, 1);
+INSERT INTO auto_market.v_cart_info_user (id, quantity, store_quantity, price, amount_in_package, item_name, session_id, cart_id, detail_id, user_id) VALUES (136, 1, 99, 509.00, 1, 'Сальник', 8, 28, 94, 1);

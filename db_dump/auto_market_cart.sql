@@ -1,0 +1,1 @@
+INSERT INTO auto_market.cart (id, session_id, sum, user_id) VALUES (28, 8, null, 1);

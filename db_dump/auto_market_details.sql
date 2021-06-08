@@ -1,0 +1,58 @@
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (6, 1, 'Верхний рычаг задний левый (в сборе)', '48790', '48790');
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (7, 1, 'Верхний рычаг задний правый (в сборе)', '48770A', '48770A');
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (8, 1, 'Продольный рычаг задний левый (в сборе)', '48780E', '48780E');
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (9, 1, 'Продольный рычаг задний правый (в сборе)', '48760E', '48760E');
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (10, 1, 'Рычаг задней подвески левый поперечный № 1', '48720A', '48720A');
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (11, 1, 'Рычаг задней подвески левый № 2', '48740F', '48740F');
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (12, 1, 'Рычаг задней подвески правый поперечный № 1', '48710A', '48710A');
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (13, 1, 'Рычаг задней подвески правый № 2', '48730F', '48730F');
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (14, 2, 'Рычаг передней подвески нижний левый № 1', '48069', '48069');
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (15, 2, 'Рычаг передней подвески нижний левый № 1', '48068', '48068');
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (16, null, 'Рычаг подвески', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (17, null, 'Продольный рычаг задний левый', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (18, null, 'Сайлентблок заднего продольного рычага ', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (19, null, 'Сайлентблок продольного рычага к цапфе', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (20, null, 'Сайлентблок задней продольной тяги
+', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (21, null, 'Рычаг подвески ', '48790', null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (22, null, 'Тяга поперечная задней подвески верхняя', '54G', null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (23, null, 'Сайлентблок задней поперечной тяги', '487', null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (24, null, 'Тяга задняя поперечная левая', '78A', null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (25, null, 'Рычаг подвески правый', '48770A', null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (26, null, 'Тяга задняя поперечная ', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (27, null, 'Рычаг подвески', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (28, null, 'Тяга поперечная задней подвески верхняя', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (29, null, 'Сайлентблок задней тяги', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (30, null, 'Рычаг независимой подвески колес', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (31, null, 'Рычаг подвески', '48760E', null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (32, null, 'Сайлентблок заднего продольного рычага', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (33, null, 'Сайлентблок
+', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (40, null, 'Рычаг подвески ', '48720A', null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (41, null, 'Сайлентблок заднего поперечного рычага', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (42, null, 'Тяга подвески', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (43, null, 'Тяга поперечная', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (44, null, 'Рычаг задний', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (45, null, 'Сайлентблок задней поперечной тяги
+', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (46, null, 'Рычаг подвески', '48740F', null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (47, null, 'Рычаг задний поперечный нижний (под пружину)', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (48, null, 'Сайлентблок заднего рычага', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (49, null, 'Рычаг подвески', '48710A', null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (50, null, 'Тяга подвески', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (51, null, 'Тяга поперечная', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (52, null, 'Рычаг задний', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (53, null, 'Сайлентблок задней поперечной тяги', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (54, null, 'Рычаг подвески', '48730F', null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (55, null, 'Рычаг задний поперечный (под пружину)', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (56, null, 'Сайлентблок заднего рычага', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (57, null, 'Рычаг подвески ', '48069', null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (58, null, 'Рычаг передний левый', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (59, null, 'Пыльник шаровой опоры', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (60, null, 'Рычаг подвески', '48068', null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (61, null, 'Рычаг передний правый', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (62, null, 'Пыльник шаровой опоры', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (63, 3, 'Сальник переднего приводного вала, правый / Сальник хвостовика
+', '43410M', '43410M');
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (64, null, 'Сальник привода', null, null);
+INSERT INTO auto_market.details (id, detail_group_list_id, name, article_original, code) VALUES (65, null, 'Сальник', null, null);

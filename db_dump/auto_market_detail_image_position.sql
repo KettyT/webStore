@@ -1,0 +1,11 @@
+INSERT INTO auto_market.detail_image_position (id, x, y, width, height, detail_id, detail_group_list_id) VALUES (1, 76.0526, 70.6834, 18.6842, 2.7877, 14, 2);
+INSERT INTO auto_market.detail_image_position (id, x, y, width, height, detail_id, detail_group_list_id) VALUES (2, 76.4473, 73.0215, 19.0789, 2.028, 15, 2);
+INSERT INTO auto_market.detail_image_position (id, x, y, width, height, detail_id, detail_group_list_id) VALUES (4, 38.1281407, 30.66424022, 7.09798995, 2.638762511, 6, 1);
+INSERT INTO auto_market.detail_image_position (id, x, y, width, height, detail_id, detail_group_list_id) VALUES (5, 38.19095477, 27.57142857, 8.165829146, 3.002729754, 7, 1);
+INSERT INTO auto_market.detail_image_position (id, x, y, width, height, detail_id, detail_group_list_id) VALUES (6, 7.286432161, 69.79071884, 7.788944724, 2.547770701, 8, 1);
+INSERT INTO auto_market.detail_image_position (id, x, y, width, height, detail_id, detail_group_list_id) VALUES (7, 7.035175879, 66.60691538, 8.354271357, 2.365787079, 9, 1);
+INSERT INTO auto_market.detail_image_position (id, x, y, width, height, detail_id, detail_group_list_id) VALUES (8, 33.4798995, 90.44585987, 7.788944724, 2.729754322, 10, 1);
+INSERT INTO auto_market.detail_image_position (id, x, y, width, height, detail_id, detail_group_list_id) VALUES (9, 46.85929648, 11.55595996, 8.542713568, 2.365787079, 11, 1);
+INSERT INTO auto_market.detail_image_position (id, x, y, width, height, detail_id, detail_group_list_id) VALUES (10, 33.29145729, 86.85304823, 8.228643216, 2.820746133, 12, 1);
+INSERT INTO auto_market.detail_image_position (id, x, y, width, height, detail_id, detail_group_list_id) VALUES (11, 47.04773869, 8.372156506, 7.851758794, 2.547770701, 13, 1);
+INSERT INTO auto_market.detail_image_position (id, x, y, width, height, detail_id, detail_group_list_id) VALUES (12, 80, 69, 8, 3, 63, 3);

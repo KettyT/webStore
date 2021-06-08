@@ -1,0 +1,3 @@
+INSERT INTO auto_market.detail_group_list (id, url, text_title, number, details_group_id) VALUES (1, '/images/ware_images/483830E.gif', 'Задняя подвеска', 4802, 17);
+INSERT INTO auto_market.detail_group_list (id, url, text_title, number, details_group_id) VALUES (2, '/images/ware_images/482202G.gif', 'Передняя подвеска', 4804, 17);
+INSERT INTO auto_market.detail_group_list (id, url, text_title, number, details_group_id) VALUES (3, '/images/ware_images/433225B.gif', 'Привод колеса', 4806, 21);

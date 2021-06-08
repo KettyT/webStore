@@ -1,0 +1,2 @@
+INSERT INTO auto_market.order_refund_request (id, user_id, order_detail_id, text, date_create, date_closed, status, quantity) VALUES (22, 1, 19, 'Брак', '2021-06-06 18:15:02', null, 'created', 1);
+INSERT INTO auto_market.order_refund_request (id, user_id, order_detail_id, text, date_create, date_closed, status, quantity) VALUES (23, 1, 6, 'Брак', '2021-06-07 20:29:29', null, 'created', 1);

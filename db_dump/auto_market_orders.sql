@@ -1,0 +1,10 @@
+INSERT INTO auto_market.orders (id, user_id, number, date_delivery, date_create, status) VALUES (3, 1, 1, '2021-05-03 21:34:55', '2021-05-03 21:34:55', 'completed');
+INSERT INTO auto_market.orders (id, user_id, number, date_delivery, date_create, status) VALUES (4, 1, 1, '2021-05-08 12:03:52', '2021-05-08 12:03:52', 'completed');
+INSERT INTO auto_market.orders (id, user_id, number, date_delivery, date_create, status) VALUES (5, 1, 1, '2021-05-22 16:25:25', '2021-05-22 16:25:25', 'completed');
+INSERT INTO auto_market.orders (id, user_id, number, date_delivery, date_create, status) VALUES (6, 1, 1, '2021-05-22 21:38:48', '2021-05-22 21:38:48', 'completed');
+INSERT INTO auto_market.orders (id, user_id, number, date_delivery, date_create, status) VALUES (7, 1, 1, '2021-06-05 18:53:06', '2021-06-05 18:53:06', 'completed');
+INSERT INTO auto_market.orders (id, user_id, number, date_delivery, date_create, status) VALUES (8, 1, 1, '2021-06-06 12:00:48', '2021-06-06 12:00:48', 'completed');
+INSERT INTO auto_market.orders (id, user_id, number, date_delivery, date_create, status) VALUES (9, 1, 1, '2021-06-06 12:32:18', '2021-06-06 12:32:18', 'completed');
+INSERT INTO auto_market.orders (id, user_id, number, date_delivery, date_create, status) VALUES (11, 1, 1, '2021-06-06 20:13:43', '2021-06-06 20:13:43', 'created');
+INSERT INTO auto_market.orders (id, user_id, number, date_delivery, date_create, status) VALUES (12, 1, 1, '2021-06-06 20:18:20', '2021-06-06 20:18:20', 'created');
+INSERT INTO auto_market.orders (id, user_id, number, date_delivery, date_create, status) VALUES (13, 1, 1, '2021-06-08 20:11:36', '2021-06-08 20:11:36', 'created');

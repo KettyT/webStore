@@ -1,0 +1,16 @@
+INSERT INTO auto_market.v_cart_info_session (id, quantity, store_quantity, price, amount_in_package, item_name, session_id, cart_id, detail_id, session_code) VALUES (134, 2, 12, 527.00, 1, 'Сальник переднего приводного вала, правый / Сальник хвостовика
+', 8, 28, 55, '695fcc53-3bb3-4fd4-8072-63dafc4eb81c');
+INSERT INTO auto_market.v_cart_info_session (id, quantity, store_quantity, price, amount_in_package, item_name, session_id, cart_id, detail_id, session_code) VALUES (135, 1, 10, 126.00, 1, 'Сальник привода', 8, 28, 93, '695fcc53-3bb3-4fd4-8072-63dafc4eb81c');
+INSERT INTO auto_market.v_cart_info_session (id, quantity, store_quantity, price, amount_in_package, item_name, session_id, cart_id, detail_id, session_code) VALUES (136, 1, 99, 509.00, 1, 'Сальник', 8, 28, 94, '695fcc53-3bb3-4fd4-8072-63dafc4eb81c');
+INSERT INTO auto_market.v_cart_info_session (id, quantity, store_quantity, price, amount_in_package, item_name, session_id, cart_id, detail_id, session_code) VALUES (134, 2, 12, 527.00, 1, 'Сальник переднего приводного вала, правый / Сальник хвостовика
+', 8, 28, 55, 'a21a2ec5-26f9-414b-8749-b3fd035ffb64');
+INSERT INTO auto_market.v_cart_info_session (id, quantity, store_quantity, price, amount_in_package, item_name, session_id, cart_id, detail_id, session_code) VALUES (135, 1, 10, 126.00, 1, 'Сальник привода', 8, 28, 93, 'a21a2ec5-26f9-414b-8749-b3fd035ffb64');
+INSERT INTO auto_market.v_cart_info_session (id, quantity, store_quantity, price, amount_in_package, item_name, session_id, cart_id, detail_id, session_code) VALUES (136, 1, 99, 509.00, 1, 'Сальник', 8, 28, 94, 'a21a2ec5-26f9-414b-8749-b3fd035ffb64');
+INSERT INTO auto_market.v_cart_info_session (id, quantity, store_quantity, price, amount_in_package, item_name, session_id, cart_id, detail_id, session_code) VALUES (134, 2, 12, 527.00, 1, 'Сальник переднего приводного вала, правый / Сальник хвостовика
+', 8, 28, 55, '7c77251b-d3b2-4fec-8478-078954a02f4c');
+INSERT INTO auto_market.v_cart_info_session (id, quantity, store_quantity, price, amount_in_package, item_name, session_id, cart_id, detail_id, session_code) VALUES (135, 1, 10, 126.00, 1, 'Сальник привода', 8, 28, 93, '7c77251b-d3b2-4fec-8478-078954a02f4c');
+INSERT INTO auto_market.v_cart_info_session (id, quantity, store_quantity, price, amount_in_package, item_name, session_id, cart_id, detail_id, session_code) VALUES (136, 1, 99, 509.00, 1, 'Сальник', 8, 28, 94, '7c77251b-d3b2-4fec-8478-078954a02f4c');
+INSERT INTO auto_market.v_cart_info_session (id, quantity, store_quantity, price, amount_in_package, item_name, session_id, cart_id, detail_id, session_code) VALUES (134, 2, 12, 527.00, 1, 'Сальник переднего приводного вала, правый / Сальник хвостовика
+', 8, 28, 55, '9a87177e-101c-4d11-93f6-f1c68bdacf8a');
+INSERT INTO auto_market.v_cart_info_session (id, quantity, store_quantity, price, amount_in_package, item_name, session_id, cart_id, detail_id, session_code) VALUES (135, 1, 10, 126.00, 1, 'Сальник привода', 8, 28, 93, '9a87177e-101c-4d11-93f6-f1c68bdacf8a');
+INSERT INTO auto_market.v_cart_info_session (id, quantity, store_quantity, price, amount_in_package, item_name, session_id, cart_id, detail_id, session_code) VALUES (136, 1, 99, 509.00, 1, 'Сальник', 8, 28, 94, '9a87177e-101c-4d11-93f6-f1c68bdacf8a');
